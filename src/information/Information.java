@@ -5,7 +5,7 @@ public interface Information {
 	
 	public void setPhoneNumber(PhoneNumber number);
 	public void setEmailAddress(String email);
-	public int getPhoneNumber();
+	public long getPhoneNumber();
 	public String getEmailAddress();
 	
 

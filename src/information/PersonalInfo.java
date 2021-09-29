@@ -39,7 +39,8 @@ public class PersonalInfo implements Information{
 		this.email = newEmail;
 	}
 	
-	public int getPhoneNumber()
+	
+	public long getPhoneNumber()
 	{
 		return this.number.getNumber();
 	}
@@ -48,11 +49,6 @@ public class PersonalInfo implements Information{
 	public String getEmailAddress()
 	{
 
-		if(this.email == null)
-		{
-			return "No Registered Email Found";
-		}
-	
 		return this.email.getEmailAddress();
 
 	}

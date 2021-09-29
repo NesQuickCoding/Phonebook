@@ -14,7 +14,7 @@ public class Phonebook {
 		this.userPhonebookMap = new HashMap<Person, PhoneNumber>();
 	}
 	
-	public Phonebook(String name, int number)
+	public Phonebook(String name, long number)
 	{
 		
 		this.userPhonebookMap = new HashMap<Person, PhoneNumber>();
@@ -38,7 +38,7 @@ public class Phonebook {
 		
 	}
 	
-	public void setNumber(Person person, int number)
+	public void setNumber(Person person, long number)
 	{
 		PhoneNumber newNumber = new PhoneNumber();
 		newNumber.setNumber(number);

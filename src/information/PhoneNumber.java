@@ -1,23 +1,23 @@
 package information;
 
 public class PhoneNumber {
-	private int number; 
+	private long number; 
 	
 	public PhoneNumber()
 	{
 	}
 	
-	public PhoneNumber(int number)
+	public PhoneNumber(long number)
 	{
 		this.number = number; 
 	}
 	
-	public void setNumber(int number)
+	public void setNumber(long number)
 	{
 		this.number = number; 
 	}
 	
-	public int getNumber()
+	public long getNumber()
 	{
 		return this.number; 
 	}

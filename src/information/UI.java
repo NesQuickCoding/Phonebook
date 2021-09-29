@@ -42,7 +42,7 @@ public class UI {
 		System.out.println("4 - Add an Email address");
 		System.out.println("5 - Search for personal information");
 		System.out.println("6 - Delete personal information");
-		System.out.println("7 - Filtered Listing");
+		System.out.println("7 - Display Listing");
 		System.out.println("0 - Quit");
 		System.out.println("------------------------------------------------------");
 		
@@ -96,7 +96,7 @@ public class UI {
 				break; 
 			case 7:
 				System.out.println("Filtered listing");
-				filteredListing();
+				displayListing();
 				menu();
 				break; 
 			case 0:
@@ -128,7 +128,7 @@ public class UI {
 		newPerson.setName(name);
 		
 		System.out.print("Please enter this persons number: ");
-		int number = Integer.parseInt(sc.nextLine());
+		long number = Long.parseLong(sc.nextLine());
 		
 		PhoneNumber newNumber = new PhoneNumber();
 		newNumber.setNumber(number);
@@ -168,7 +168,7 @@ public class UI {
 		System.out.println("------------------------------------------------------");
 		System.out.println("Searching by Number");
 		System.out.print("Please enter the persons number: ");
-		int number = Integer.parseInt(sc.nextLine());
+		long number = Long.parseLong(sc.nextLine());
 
 		for(Person person : this.phonebookMap.keySet())
 		{
@@ -324,7 +324,7 @@ public class UI {
 			// Save the persons original email address
 			String emailAddress = this.phonebookMap.get(person).getEmailAddress();
 			// Add a new phone number  to the hashMap
-			int phoneNumber = 0;
+			long phoneNumber = 0;
 			PersonalInfo updatedPersonalInfo = new PersonalInfo();
 			updatedPersonalInfo.setEmailAddress(emailAddress);
 			updatedPersonalInfo.setPhoneNumber(new PhoneNumber(phoneNumber));
@@ -340,7 +340,7 @@ public class UI {
 			System.out.println(String.format("Deleting %s's Email Address", person.getName()));
 			
 			// Save the persons original phone number
-			int phoneNumber = this.phonebookMap.get(person).getPhoneNumber();
+			long phoneNumber = this.phonebookMap.get(person).getPhoneNumber();
 			
 			PersonalInfo updatedPersonalInfo = new PersonalInfo();
 			updatedPersonalInfo.setEmailAddress("No Email");
@@ -358,7 +358,7 @@ public class UI {
 	} // end of 
 	
 	
-	private void filteredListing()
+	private void displayListing()
 	{
 		System.out.println("------------------------------------------------------");
 		System.out.println("Filtered Listing");
