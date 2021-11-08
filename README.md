@@ -7,15 +7,19 @@ Created: July 2021
 ### Program Walkthough GIF
 
 Adding name and phone number. Then searching for their name and number.
+
 <img src="https://github.com/NesQuickCoding/Phonebook/blob/main/Demo1.gif?raw=true" width=250><br>
 
 Adding Email Address. Then searching for persons personal information.
+
 <img src="https://github.com/NesQuickCoding/Phonebook/blob/main/Demo2.gif?raw=true" width=250><br>
 
 Deleting Personal Information.
+
 <img src="https://github.com/NesQuickCoding/Phonebook/blob/main/Demo3.gif?raw=true" width=250><br>
 
 Displaying Phonebook Listings. 
+
 <img src="https://github.com/NesQuickCoding/Phonebook/blob/main/Demo4.gif" width=250><br>
 
 
