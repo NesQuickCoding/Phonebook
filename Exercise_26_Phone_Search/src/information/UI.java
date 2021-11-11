@@ -105,6 +105,10 @@ public class UI {
 				displayListing();
 				menu();
 				break; 
+			case 8:
+				System.out.println("Scan a CSV");
+				
+				
 			case 0:
 				System.out.println("Quit");
 				quitting();
@@ -409,6 +413,19 @@ public class UI {
 		System.out.println("------------------------------------------------------");
 	}
 	
+	// this method scans a CSV
+	// places those information in the proper objects to add to our HashMap
+	private void scanCSV() throws Exception
+	{
+		System.out.println("------------------------------------------------------");
+		System.out.println("Scanning CSV");
+		System.out.println("------------------------------------------------------");
+		System.out.print("Please enter the csv name: ");
+		String csv_input = sc.nextLine();
+		
+		// Add our try catch or throw exception if csv file does not exist
+		
+	}
 	
 	private void quitting()
 	{
