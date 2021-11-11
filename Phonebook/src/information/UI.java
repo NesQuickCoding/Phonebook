@@ -73,42 +73,39 @@ public class UI {
 			case 1:
 				System.out.println("Adding a number");
 				addNumber(); 
-				menu();
+				commandMenu();
 				break;
 			case 2: 
 				System.out.println("Searching for a number");
 				searchByName();
-				menu();
+				commandMenu();
 				break; 
 			case 3:
 				System.out.println("Search for a person by phone number");
 				searchByNumber();
-				menu();
+				commandMenu();
 				break; 
 			case 4:
 				System.out.println("Add an Email address");
 				addEmailAddress();
-				menu();
+				commandMenu();
 				break;
 			case 5:
 				System.out.println("Search for personal information");
 				searchPersonalInfo();
-				menu();
+				commandMenu();
 				break;
 			case 6:
 				System.out.println("Delete personal information");
 				deletePersonalInfo();
-				menu();
+				commandMenu();
 				break; 
 			case 7:
 				System.out.println("Filtered listing");
 				displayListing();
-				menu();
+				commandMenu();
 				break; 
-			case 8:
-				System.out.println("Scan a CSV");
-				
-				
+						
 			case 0:
 				System.out.println("Quit");
 				quitting();
@@ -162,7 +159,8 @@ public class UI {
 		{
 			if(person.equals(new Person(name)))
 			{
-				System.out.println("Person found");
+				System.out.println("Person Found");
+				System.out.println("Name: " + person.getName());
 				System.out.println("Number: " + this.phonebookMap.get(person).getPhoneNumber());
 			} else {
 				System.out.println("Sorry, Person not found");
@@ -424,6 +422,29 @@ public class UI {
 		String csv_input = sc.nextLine();
 		
 		// Add our try catch or throw exception if csv file does not exist
+		
+	}
+	
+	private void commandMenu()
+	{
+		System.out.println("------------------------------------------------------");
+		System.out.println("Enter 1 for Main Menu");
+		System.out.println("Enter 0 to Quit");
+		
+		System.out.print("Command: ");
+		String command = sc.nextLine();
+		
+		switch(command) {
+		case "1":
+			menu();
+			break;
+		case "0":
+			quitting();
+			break;
+		default:
+			System.out.println("Wrong input, please try again");
+			commandMenu();
+		}
 		
 	}
 	
