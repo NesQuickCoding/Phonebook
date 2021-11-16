@@ -43,8 +43,8 @@ public class UI {
 		System.out.println("------------------------------------------------------");
 		System.out.println("Available operations:");
 		System.out.println("1 - Add a number");
-		System.out.println("2 - Search for a number");
-		System.out.println("3 - Search for a person by phone number");
+		System.out.println("2 - Search for a number by name");
+		System.out.println("3 - Search for a name by phone number");
 		System.out.println("4 - Add an Email address");
 		System.out.println("5 - Search for personal information");
 		System.out.println("6 - Delete personal information");
@@ -76,12 +76,12 @@ public class UI {
 				commandMenu();
 				break;
 			case 2: 
-				System.out.println("Searching for a number");
+				System.out.println("Searching for a phone number by name");
 				searchByName();
 				commandMenu();
 				break; 
 			case 3:
-				System.out.println("Search for a person by phone number");
+				System.out.println("Search for a name by phone number");
 				searchByNumber();
 				commandMenu();
 				break; 
@@ -159,9 +159,9 @@ public class UI {
 		{
 			if(person.equals(new Person(name)))
 			{
-				System.out.println("Person Found");
+				System.out.println("Name Found");
 				System.out.println("Name: " + person.getName());
-				System.out.println("Number: " + this.phonebookMap.get(person).getPhoneNumber());
+				System.out.println("Number: " + convertNumber(this.phonebookMap.get(person).getPhoneNumber()));
 			} else {
 				System.out.println("Sorry, Person not found");
 			}
@@ -226,9 +226,10 @@ public class UI {
 	{
 		String number = Long.toString(num);
 		
-		String updatedNumber = number.replace("(\\d{3})(\\d{3})({\\d+)", "($1) $2-$3");
+		// Reference https://howtodoinjava.com/java/string/format-phone-number/
+		String updatedNumber = number.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
 		
-		return number;
+		return updatedNumber;
 	}
 	
 	
@@ -401,14 +402,29 @@ public class UI {
 	{
 		System.out.println("------------------------------------------------------");
 		System.out.println("Displaying Information");
-		System.out.println(person);
-		System.out.println("Phone Number: " + this.phonebookMap.get(person).getPhoneNumber());
 		
-
-		System.out.println("Email Address: " + this.phonebookMap.get(person).getEmailAddress());
-
+		displayName(person);
+		displayNumber(person);
+		displayEmail(person);
 		 
 		System.out.println("------------------------------------------------------");
+	}
+	
+	
+	public void displayName(Person person)
+	{
+		System.out.println("Name: " + person.getName());
+	}
+	
+	public void displayNumber(Person person)
+	{
+		System.out.println("Phone Number: " + convertNumber(this.phonebookMap.get(person).getPhoneNumber()));
+	}
+	
+	
+	public void displayEmail(Person person)
+	{
+		System.out.println("Email Address: " + this.phonebookMap.get(person).getEmailAddress());
 	}
 	
 	// this method scans a CSV
