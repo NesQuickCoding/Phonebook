@@ -7,18 +7,6 @@ public class PersonalInfo implements Information{
 	
 	public PersonalInfo()
 	{
-		this.number = new PhoneNumber();
-		this.email = new EmailAddress();
-	}
-	
-	public PersonalInfo(PhoneNumber number)
-	{
-		this.number = number; 
-	}
-	
-	public PersonalInfo(EmailAddress email)
-	{
-		this.email = email;
 	}
 	
 	public PersonalInfo(PhoneNumber number, EmailAddress email)
@@ -33,10 +21,9 @@ public class PersonalInfo implements Information{
 		this.number = number;
 	}
 
-	public void setEmailAddress(String email)
+	public void setEmailAddress(EmailAddress email)
 	{
-		EmailAddress newEmail = new EmailAddress(email);
-		this.email = newEmail;
+		this.email = email;
 	}
 	
 	
@@ -61,6 +48,12 @@ public class PersonalInfo implements Information{
 		String footer = "*************************";
 		
 		return header + "\n" + this.number + "\n" + this.email + "\n" + footer; 
+	}
+
+	@Override
+	public void setEmailAddress(String email) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
