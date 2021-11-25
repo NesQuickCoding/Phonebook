@@ -206,14 +206,25 @@ public class UI {
 		
 		String phone = sc.nextLine();
 		
-		long phoneLong = Long.valueOf(phone);
+		if(phone.length() != 10)
+		{
+
+			System.out.println("Phone number must be 10 digits");
+			System.out.println("Please try again.");
+			
+			addPhoneNumber(name);
+		
+		} 
 		
 		PhoneNumber newPhone = new PhoneNumber();
+		long phoneLong = Long.valueOf(phone);
 		newPhone.setNumber(phoneLong);
-	
+
+		
 		System.out.println("------------------------------------------------------");
 		
 		return newPhone;
+		
 	}
 
 	
@@ -330,7 +341,7 @@ public class UI {
 		String number = Long.toString(num);
 		
 		// Reference https://howtodoinjava.com/java/string/format-phone-number/
-		String updatedNumber = number.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
+		String updatedNumber = number.replaceFirst("(\\d{3})(\\d{3})(\\d{4})", "($1) $2-$3");
 		
 		return updatedNumber;
 	}
@@ -475,7 +486,7 @@ public class UI {
 	private void displayListing()
 	{
 		System.out.println("------------------------------------------------------");
-		System.out.println("Filtered Listing");
+		System.out.println("Displaying Phonebook Information");
 		
 		if(this.phonebookMap.isEmpty())
 		{
