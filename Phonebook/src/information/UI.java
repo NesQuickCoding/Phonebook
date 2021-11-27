@@ -237,11 +237,23 @@ public class UI {
 		
 		String email = sc.nextLine();
 		
+		
 		EmailAddress newEmail = new EmailAddress();
-		newEmail.setEmailAddress(email);
-	
-		System.out.println("------------------------------------------------------");
+		
 
+
+		// loop it until they enter a valid email address
+		while(newEmail.validEmail(email) == false)
+		{
+			System.out.println("Invalid Email Address");
+			System.out.println("Please try again");
+			System.out.println("Please enter " + name + "'s Email Address");
+			email = sc.nextLine();
+
+		}
+			newEmail.setEmailAddress(email);
+
+		System.out.println("------------------------------------------------------");
 		return newEmail;
 	} // end of addEmailAddress method
 	
