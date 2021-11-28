@@ -13,12 +13,12 @@ import java.util.HashMap;
 	
 public class UI {
 	
-	private HashMap<String, PersonalInfo> phonebookMap; 
+	private HashMap<Name, PersonalInfo> phonebookMap; 
 	private Scanner sc; 
 
 	public UI()
 	{
-		this.phonebookMap = new HashMap<String, PersonalInfo>();
+		this.phonebookMap = new HashMap<Name, PersonalInfo>();
 		this.sc = new Scanner(System.in);
 	}
 	
@@ -132,15 +132,15 @@ public class UI {
 		System.out.println("------------------------------------------------------");
 		System.out.println("Adding a new Person");
 		
-		System.out.print("Please enter person name: ");
-		String name = sc.nextLine();
-	
-		PhoneNumber newNumber = addPhoneNumber(name);
+
+		Name newName = addValidName();
 		
-		EmailAddress newEmail = addEmailAddress(name);
+		PhoneNumber newNumber = addPhoneNumber(newName);
+		
+		EmailAddress newEmail = addEmailAddress(newName);
 		
 		// now we add this to our HashMap
-		phonebookMap.put(name, new PersonalInfo(newNumber, newEmail));
+		phonebookMap.put(newName, new PersonalInfo(newNumber, newEmail));
 		
 		System.out.println("------------------------------------------------------");
 	} // end of addNumber method 
@@ -150,10 +150,10 @@ public class UI {
 	{
 		System.out.println("------------------------------------------------------");
 		System.out.println("Searching by Name");
-		System.out.print("Please enter the person's name: ");
+		System.out.print("Please enter the person's Full Name: ");
 		String name = sc.nextLine();
 		
-		for(String n : this.phonebookMap.keySet())
+		for(Name n : this.phonebookMap.keySet())
 		{
 			if(n.equals(name))
 			{
@@ -179,7 +179,7 @@ public class UI {
 		System.out.print("Please enter the persons number: ");
 		long number = Long.parseLong(sc.nextLine());
 
-		for(String n : this.phonebookMap.keySet())
+		for(Name n : this.phonebookMap.keySet())
 		{
 			if(this.phonebookMap.get(n).getPhoneNumber() == number)
 			{
@@ -196,9 +196,41 @@ public class UI {
 		
 	}
 
+	// This method adds a valid first and last name
+	// it loops if the entered name is not valid 
+	private Name addValidName()
+	{
+		System.out.print("Please enter the first name: ");
+		String firstName = sc.nextLine();
+		
+		Name newName = new Name();
+		
+		while(!newName.validName(firstName))
+		{
+			System.out.println("First name is not valid, please try again");
+			System.out.print("Please enter the First name: ");
+			firstName = sc.nextLine();
+		}
+		
+		
+		System.out.print("Please enter the last name: ");
+		String lastName = sc.nextLine();
+		
+		while(!newName.validName(lastName))
+		{
+			System.out.println("Last name is not valid, please try again");
+			System.out.print("Please enter the Last name: ");
+			lastName = sc.nextLine();
+		}
+		
+		
+		newName.setName(firstName,  lastName);
+		
+		return newName;
+	} // end of addValidName method 
 	
 	// Returns a PhoneNumber object
-	private PhoneNumber addPhoneNumber(String name)
+	private PhoneNumber addPhoneNumber(Name name)
 	{
 		System.out.println("------------------------------------------------------");
 		System.out.println("Adding Phone Number");
@@ -229,7 +261,7 @@ public class UI {
 
 	
 	// Returns an EmailAddress object
-	private EmailAddress addEmailAddress(String name)
+	private EmailAddress addEmailAddress(Name name)
 	{
 		System.out.println("------------------------------------------------------");
 		System.out.println("Adding Email Address");
@@ -262,7 +294,7 @@ public class UI {
 	 * This method searches through our HashMap for the Person object whether it exist or not
 	 * @return
 	 */
-	private boolean doesPersonExist(String name)
+	private boolean doesPersonExist(Name name)
 	{
 		if(this.phonebookMap.containsKey(name))
 		{
@@ -276,14 +308,15 @@ public class UI {
 	private void updatePerson()
 	{
 		
-		System.out.print("Please enter person's name: ");
-		String name = sc.nextLine();
+		Name newName = addValidName();
 		
-		if(doesPersonExist(name))
+		
+		if(doesPersonExist(newName))
 		{
-			this.phonebookMap.get(name);
+			this.phonebookMap.get(newName);
 		}
-		for(String n: this.phonebookMap.keySet())
+		
+		for(Name n: this.phonebookMap.keySet())
 		{
 			if(doesPersonExist(n))
 			{
@@ -299,14 +332,14 @@ public class UI {
 	} // end of updatePerson method 
 	
 	// This method sets an email address for the Person object
-	private void updateEmailAddress(String name)
+	private void updateEmailAddress(Name name)
 	{;
 		EmailAddress newEmail = addEmailAddress(name);
 		
 		this.phonebookMap.get(name).setEmailAddress(newEmail);;
 	} // end of updateEmailAddress method 
 	
-	private void updatePhoneNumber(String name)
+	private void updatePhoneNumber(Name name)
 	{
 		PhoneNumber newNumber = addPhoneNumber(name);
 		// now we add this to our HashMap
@@ -316,7 +349,7 @@ public class UI {
 	
 	
 	// Ask the user which person information they would like to update
-	private void updatePI(String name)
+	private void updatePI(Name name)
 	{
 		System.out.println("Updating Person Information for: " + name);
 		
@@ -362,12 +395,11 @@ public class UI {
 	private void searchPersonalInfo()
 	{
 		System.out.println("------------------------------------------------------");
-		System.out.print("Enter the name are you looking for: ");
+		Name newName = addValidName();
 		
-		String name = sc.nextLine();
-			if(doesPersonExist(name))
+			if(doesPersonExist(newName))
 			{
-				getPersonalInfo(name);
+				getPersonalInfo(newName);
 					
 			} else {
 				System.out.println("Person not found, please try again");
@@ -379,7 +411,7 @@ public class UI {
 
 	} // end of searchPersonalInfo Method 
 	
-	private void getPersonalInfo(String name)
+	private void getPersonalInfo(Name name)
 	{
 		System.out.println("------------------------------------------------------");
 		
@@ -434,12 +466,12 @@ public class UI {
 		System.out.println("------------------------------------------------------");
 		System.out.println("Deleting Personal Information");
 		System.out.print("Enter the name you would like to delete information: ");
-		String name = sc.nextLine();
+		Name newName = addValidName();
 		
-		if(doesPersonExist(name))
+		if(doesPersonExist(newName))
 		{
 			
-			deleteSelectInfo(name);
+			deleteSelectInfo(newName);
 
 		}
 		
@@ -447,7 +479,7 @@ public class UI {
 		
 	}
 	
-	private void deleteSelectInfo(String name)
+	private void deleteSelectInfo(Name name)
 	{
 		System.out.println("Which information would you like to be deleted? ");
 		System.out.println("For Phone Number, Enter 1");
@@ -505,7 +537,7 @@ public class UI {
 			System.out.println("Phonebook Empty");
 		}
 		else {
-			for(String name : this.phonebookMap.keySet())
+			for(Name name : this.phonebookMap.keySet())
 			{
 				displayInfo(name);
 			}
@@ -518,7 +550,7 @@ public class UI {
 	
 	// Display Person's name
 	// PhoneNumber and Email
-	private void displayInfo(String name)
+	private void displayInfo(Name name)
 	{
 		System.out.println("------------------------------------------------------");
 		System.out.println("Displaying Information");
@@ -531,17 +563,17 @@ public class UI {
 	}
 	
 	
-	public void displayName(String name)
+	public void displayName(Name name)
 	{
 		System.out.println("Name: " + name);
 	}
 	
-	public void displayNumber(String name)
+	public void displayNumber(Name name)
 	{
 		System.out.println("Phone Number: " + convertNumber(this.phonebookMap.get(name).getPhoneNumber()));
 	}
 	
-	public void displayEmail(String name)
+	public void displayEmail(Name name)
 	{
 		System.out.println("Email Address: " + this.phonebookMap.get(name).getEmailAddress());
 	}
