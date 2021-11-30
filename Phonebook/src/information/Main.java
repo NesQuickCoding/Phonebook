@@ -15,7 +15,7 @@ public class Main {
 	public static void main(String[] args)
 	{
 
-		 UI newSession = new UI();
+		 ConsoleApp newSession = new ConsoleApp();
 		 newSession.start();
 		
 

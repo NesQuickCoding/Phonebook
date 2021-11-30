@@ -22,13 +22,13 @@ public class Name {
 	// Getters
 	public String getFirstName()
 	{
-		return this.getFirstName();
+		return this.firstName;
 	}
 
 	
 	public String getLastName()
 	{
-		return this.getLastName();
+		return this.lastName;
 	}
 	
 	public String getFullName()
@@ -76,6 +76,18 @@ public class Name {
 	}
 
 
+	// we need to override equals method
+	// in order compare name based on Strings
+	public boolean equals(Name name)
+	{
+		// check if both first name and last name are the same
+		if(name.getFirstName().equals(this.getFirstName()) && name.getLastName().equals(this.getLastName()))
+		{
+			return true; 
+		}
+		
+		return false; 
+	}
 	
 	public String toString()
 	{

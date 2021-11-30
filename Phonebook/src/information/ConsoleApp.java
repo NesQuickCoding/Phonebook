@@ -11,12 +11,12 @@ import java.util.HashMap;
  *
  */
 	
-public class UI {
+public class ConsoleApp {
 	
 	private HashMap<Name, PersonalInfo> phonebookMap; 
 	private Scanner sc; 
 
-	public UI()
+	public ConsoleApp()
 	{
 		this.phonebookMap = new HashMap<Name, PersonalInfo>();
 		this.sc = new Scanner(System.in);
@@ -25,7 +25,7 @@ public class UI {
 	public void start()
 	{
 		System.out.println("------------------------------------------------------");
-		System.out.println("Welcome to the Phonebook");
+		System.out.println("\t\tWelcome to Phonebook");
 		System.out.println("------------------------------------------------------");
 		
 		// activate menu
@@ -38,7 +38,7 @@ public class UI {
 	
 	public void menu()
 	{
-		System.out.println("Main Menu:");
+		System.out.println("\t\tMain Menu:");
 		
 		System.out.println("------------------------------------------------------");
 		System.out.println("Available operations:");
@@ -150,23 +150,28 @@ public class UI {
 	{
 		System.out.println("------------------------------------------------------");
 		System.out.println("Searching by Name");
-		System.out.print("Please enter the person's Full Name: ");
-		String name = sc.nextLine();
+		Name name = addValidName();
+		boolean found = false;
 		
-		for(Name n : this.phonebookMap.keySet())
-		{
-			if(n.equals(name))
-			{
-				System.out.println("Name Found");
-				System.out.println("Name: " + n);
-				System.out.println("Number: " + convertNumber(this.phonebookMap.get(n).getPhoneNumber()));
-			} else {
-				System.out.println("Sorry, Person not found");
-				System.out.println("Please try again");
-				searchByName();
-			}
-		} // end of for loop 
-		
+
+				for(Name n : this.phonebookMap.keySet())
+				{
+					if(n.equals(name))
+					{
+						System.out.println("Name Found");
+						System.out.println("Name: " + n);
+						System.out.println("Number: " + convertNumber(this.phonebookMap.get(n).getPhoneNumber()));
+						found = true;
+					} 
+				}
+				
+				if(found == false)
+				{
+					System.out.println("Name cannot be found");
+					System.out.println("Please try again");
+					searchByName();
+				}
+				
 		System.out.println("------------------------------------------------------");
 		
 	} // end of searchByName method
@@ -553,7 +558,6 @@ public class UI {
 	private void displayInfo(Name name)
 	{
 		System.out.println("------------------------------------------------------");
-		System.out.println("Displaying Information");
 		
 		displayName(name);
 		displayNumber(name);
