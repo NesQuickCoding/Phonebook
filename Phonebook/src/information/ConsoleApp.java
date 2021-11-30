@@ -43,25 +43,38 @@ public class ConsoleApp {
 		System.out.println("------------------------------------------------------");
 		System.out.println("Available operations:");
 		System.out.println("1 - Add a new Person");
-		System.out.println("2 - Search for a number by name");
-		System.out.println("3 - Search for a name by phone number");
-		System.out.println("4 - Update Person info");
-		System.out.println("5 - Search for personal information");
-		System.out.println("6 - Delete personal information");
-		System.out.println("7 - Display Listing");
+		System.out.println("2 - Search for Personal Information");
+		System.out.println("3 - Update Personal info");
+		System.out.println("4 - Delete personal information");
+		System.out.println("5 - Display Listing");
 		System.out.println("0 - Quit");
 		System.out.println("------------------------------------------------------");
 		
 		command();
 
+	} // end of menu method 
 	
-
-	}
+	public void personalInfoMenu()
+	{
+		System.out.println("------------------------------------------------------");
+		System.out.println("\t\tPersonal Info Menu");
+		System.out.println("------------------------------------------------------");
+		System.out.println("1 - Search for a Personal Info by Name");
+		System.out.println("2 - Search for Personal Info by Phone Number");
+		System.out.println("3 - Search for Personal Info by Email Address");
+		System.out.println("4 - Back To Main Menu");
+		System.out.println("0 - Exit Program");
+		System.out.println("------------------------------------------------------");
+		
+		piCommand();
+	} // end of personalInfoMenu method 
+	
+	
 	
 	public void command() 
 	{
 		
-		System.out.print("What's your command: ");
+		System.out.print("Enter your command: ");
 		
 		Scanner comm = new Scanner(System.in);
 		String userCommand = comm.nextLine();
@@ -77,35 +90,26 @@ public class ConsoleApp {
 				break;
 				
 			case 2: 
-				System.out.println("Searching for Info by name");
-				searchByName();
-				commandMenu();
+				System.out.println("Search for Personal Information");
+				personalInfoMenu();
 				break; 
+				
 				
 			case 3:
-				System.out.println("Search for a name by phone number");
-				searchByNumber();
-				commandMenu();
-				break; 
-				
-			case 4:
 				System.out.println("Update Person Info");
 				updatePerson();
 				commandMenu();
 				break;
 				
-			case 5:
+			case 4:
 				System.out.println("Search for personal information");
 				searchPersonalInfo();
 				commandMenu();
 				break;
-			case 6:
-				System.out.println("Delete personal information");
-				deletePersonalInfo();
-				commandMenu();
-				break; 
-			case 7:
-				System.out.println("Filtered listing");
+
+				
+			case 5:
+				System.out.println("Display listing");
 				displayListing();
 				commandMenu();
 				break; 
@@ -117,14 +121,52 @@ public class ConsoleApp {
 
 			} // end of switch statement 
 			
-			// if the command is not 0
-			// loop the command 
-			if(userCommandInt != 0)
-			{
-				command();
-			} 
+	} // end of command Method 
+	
+	public void piCommand() 
+	{
+		
+		System.out.print("Enter your command: ");
+		
+		Scanner comm = new Scanner(System.in);
+		String userCommand = comm.nextLine();
+		
+		int userCommandInt = Integer.parseInt(userCommand);
 			
-	}
+			switch(userCommandInt)
+			{
+			case 1:
+				System.out.println("Searching for Personal Info by Name");
+				searchByName();
+				personalInfoMenu();
+				break;
+				
+			case 2: 
+				System.out.println("Searching for Personal Info by Phone Number");
+				searchByNumber();
+				personalInfoMenu();
+				break; 
+				
+			case 3:
+				System.out.println("Search for Personal Info by Email Address");
+				searchByEmail();
+				personalInfoMenu();
+				break; 
+				
+			case 4: 
+				System.out.println("Back to Main Menu");
+				commandMenu();
+				break;
+				
+			case 0:
+				System.out.println("Exiting Program");
+				quitting();
+				break; 
+
+			} // end of switch statement 
+			
+	} // end of piCommand Method 
+	
 	
 	private void addNewPerson()
 	{
@@ -159,8 +201,7 @@ public class ConsoleApp {
 					if(n.equals(name))
 					{
 						System.out.println("Name Found");
-						System.out.println("Name: " + n);
-						System.out.println("Number: " + convertNumber(this.phonebookMap.get(n).getPhoneNumber()));
+						displayInfo(n);
 						found = true;
 					} 
 				}
@@ -176,6 +217,8 @@ public class ConsoleApp {
 		
 	} // end of searchByName method
 	
+
+	
 	
 	private void searchByNumber()
 	{
@@ -183,6 +226,7 @@ public class ConsoleApp {
 		System.out.println("Searching by Number");
 		System.out.print("Please enter the persons number: ");
 		long number = Long.parseLong(sc.nextLine());
+		boolean found = false; 
 
 		for(Name n : this.phonebookMap.keySet())
 		{
@@ -190,19 +234,58 @@ public class ConsoleApp {
 			{
 			
 				System.out.println("Number Found");
-				System.out.println("Person's name: " + n);
-			} else {
+				displayInfo(n);
+				found = true; 
+			}
+			
+		} // end of for loop
+		
+		 if(found == false)
+		 {
 				System.out.println("Sorry, Number not found");
 				System.out.println("Please try again");
 				searchByNumber();
-			}
-		}
+		 }
+
 		System.out.println("------------------------------------------------------");
 		
 	}
+	
+	private void searchByEmail()
+	{
+		System.out.println("------------------------------------------------------");
+		System.out.println("Searching by Email");
+		System.out.print("Please enter the persons Email Address: ");
+		String email = sc.nextLine();
+		boolean found = false; 
 
+		for(Name n : this.phonebookMap.keySet())
+		{
+			if(this.phonebookMap.get(n).getEmailAddress().equals(email))
+			{
+			
+				System.out.println("Email Found");
+				displayInfo(n);
+				found = true; 
+			} 
+		} // end of for loop
+		
+		 if(found == false)
+		 {
+				System.out.println("Sorry, Email not found");
+				System.out.println("Please try again");
+				searchByEmail();
+		 }
+
+		System.out.println("------------------------------------------------------");
+	} // end of searchByEmail method 
+	
+	
+
+	// Please add our new methods 
 	// This method adds a valid first and last name
 	// it loops if the entered name is not valid 
+	// This method will be used plenty of times 
 	private Name addValidName()
 	{
 		System.out.print("Please enter the first name: ");
@@ -234,7 +317,8 @@ public class ConsoleApp {
 		return newName;
 	} // end of addValidName method 
 	
-	// Returns a PhoneNumber object
+	
+
 	private PhoneNumber addPhoneNumber(Name name)
 	{
 		System.out.println("------------------------------------------------------");
@@ -265,7 +349,6 @@ public class ConsoleApp {
 	}
 
 	
-	// Returns an EmailAddress object
 	private EmailAddress addEmailAddress(Name name)
 	{
 		System.out.println("------------------------------------------------------");
@@ -301,7 +384,8 @@ public class ConsoleApp {
 	 */
 	private boolean doesPersonExist(Name name)
 	{
-		if(this.phonebookMap.containsKey(name))
+		for(Name n : this.phonebookMap.keySet())
+		if(n.equals(name))
 		{
 			return true; 
 		} 
@@ -309,40 +393,171 @@ public class ConsoleApp {
 		return false; 
 	} // end of doesPersonExist method 
 	
+	
 	// This method update the Persons Personal Information 
 	private void updatePerson()
 	{
 		
 		Name newName = addValidName();
+		boolean found = false; 
 		
 		
-		if(doesPersonExist(newName))
-		{
-			this.phonebookMap.get(newName);
-		}
-		
-		for(Name n: this.phonebookMap.keySet())
-		{
-			if(doesPersonExist(n))
+			for(Name n: this.phonebookMap.keySet())
 			{
-				System.out.println("Person Found");
-				updatePhoneNumber(n);
-				updateEmailAddress(n);
+				if(n.equals(newName))
+				{
+					System.out.println("Person Found");
+					found = true;
+					updatePI(n);
+					
+				} 
 				
-			} else {
+			} // end of for loop 
+			
+			if(found == false)
+			{
 				System.out.println("Person not found, please try again");
+				updatePerson();
 			}
-		}
+				
 		
+	
 	} // end of updatePerson method 
 	
-	// This method sets an email address for the Person object
+	
+	private void updateNameMenu(Name name)
+	{
+
+			System.out.println("------------------------------------------------------");
+			System.out.println("\t\tUpdate Name Menu");
+			System.out.println(name);
+			System.out.println("------------------------------------------------------");
+			System.out.println("1 - Change First Name");
+			System.out.println("2 - Change Last Name");
+			System.out.println("3 - Change Full Name");
+			System.out.println("4 - Back To Main Menu");
+			System.out.println("0 - Exit Program");
+			System.out.println("------------------------------------------------------");
+			
+			nameCommand(name);
+	} // end of personalInfoMenu method 
+	
+	
+		
+	private void nameCommand(Name name)
+	{
+		System.out.print("Enter your command: ");
+		
+		Scanner comm = new Scanner(System.in);
+		String userCommand = comm.nextLine();
+		
+		int userCommandInt = Integer.parseInt(userCommand);
+			
+			switch(userCommandInt)
+			{
+			case 1:
+				System.out.println("Changing First Name");
+				changeFirstName(name);
+				updateNameMenu(name);
+				break;
+				
+			case 2: 
+				System.out.println("Changing Last Name");
+				changeLastName(name);
+				updateNameMenu(name);
+				break; 
+				
+			case 3:
+				System.out.println("Changing Full Name");
+				changeFullName(name);
+				updateNameMenu(name);
+				break; 
+				
+			case 4: 
+				System.out.println("Back to Main Menu");
+				commandMenu();
+				break;
+				
+			case 0:
+				System.out.println("Exiting Program");
+				quitting();
+				break; 
+			}
+
+	} // end of name Command Menu
+	
+	private void changeFirstName(Name name)
+	{
+		String input_name = enterName("First");
+		
+		for(Name n : this.phonebookMap.keySet())
+		{
+			if(n.equals(name))
+			{
+				n.setFirstName(input_name);
+			}
+			
+		} // end of for loop 
+	} // end of changingFirstName method 
+	
+	
+	private void changeLastName(Name name)
+	{
+		String input_name = enterName("Last");
+		
+		for(Name n : this.phonebookMap.keySet())
+		{
+			if(n.equals(name))
+			{
+				n.setLastName(input_name);
+			}
+			
+		} // end of for loop 
+	} // end of changingLastName method 
+	
+	private void changeFullName(Name name)
+	{
+		changeFirstName(name);
+		changeLastName(name);
+	} // end of changeFullName method 
+	
+	
+	
+	
+	// This method can be used for First Name or Last Name depending on what the user enters as an input 
+	private String enterName(String pos)
+	{
+		System.out.print(String.format("Please enter the %s name: ", pos));
+		String name = sc.nextLine();
+		
+		Name newName = new Name();
+		
+		while(!newName.validName(name))
+		{
+			System.out.println(String.format("Entered %s name is not valid, please try again", pos));
+			System.out.print(String.format("Please enter the %s name: ", pos));
+			name = sc.nextLine();
+		}
+		
+		return name;
+	} // end of enterName method 
+	
+	
+	
+	private void updateName(Name name)
+	{
+		
+		updateNameMenu(name);
+	}
+
+	
 	private void updateEmailAddress(Name name)
-	{;
+	{
 		EmailAddress newEmail = addEmailAddress(name);
 		
 		this.phonebookMap.get(name).setEmailAddress(newEmail);;
 	} // end of updateEmailAddress method 
+	
 	
 	private void updatePhoneNumber(Name name)
 	{
@@ -352,14 +567,14 @@ public class ConsoleApp {
 	}
 	
 	
-	
 	// Ask the user which person information they would like to update
 	private void updatePI(Name name)
 	{
 		System.out.println("Updating Person Information for: " + name);
 		
-		System.out.println("Enter 1 to update Phone Number");
-		System.out.println("Enter 2 to update Email Address");
+		System.out.println("Enter 1 to update Name");
+		System.out.println("Enter 2 to update Phone Number");
+		System.out.println("Enter 3 to update Email Address");
 		System.out.println("Enter 0 to go back to Main Menu");
 		
 		System.out.print("Command: ");
@@ -368,9 +583,11 @@ public class ConsoleApp {
 		switch(comm)
 		{
 		case "1":
+			updateName(name);
+		case "2":
 			updatePhoneNumber(name);
 			break;
-		case "2":
+		case "3":
 			updateEmailAddress(name);
 			break;
 		case "0":
@@ -557,30 +774,26 @@ public class ConsoleApp {
 	// PhoneNumber and Email
 	private void displayInfo(Name name)
 	{
-		System.out.println("------------------------------------------------------");
-		
 		displayName(name);
 		displayNumber(name);
 		displayEmail(name);
-		 
-		System.out.println("------------------------------------------------------");
-	}
+	} // end of displayInfo method 
 	
 	
 	public void displayName(Name name)
 	{
 		System.out.println("Name: " + name);
-	}
+	} // end of displayName method 
 	
 	public void displayNumber(Name name)
 	{
 		System.out.println("Phone Number: " + convertNumber(this.phonebookMap.get(name).getPhoneNumber()));
-	}
+	} // end of displayNumber method 
 	
 	public void displayEmail(Name name)
 	{
 		System.out.println("Email Address: " + this.phonebookMap.get(name).getEmailAddress());
-	}
+	} // end of displayEmail method 
 	
 	
 	// this method scans a CSV
