@@ -16,7 +16,7 @@ Then searching for persons personal information.
 
 Updating name.
 
-<img src="https://github.com/NesQuickCoding/Phonebook/blob/main/Demo3.gif?raw=true" width=250><br>
+<img src="https://github.com/NesQuickCoding/Phonebook/blob/main/Demo/Demo3.gif?raw=true" width=250><br>
 
 Deleting person from Phonebook. 
 
