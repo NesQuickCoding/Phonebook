@@ -6,15 +6,15 @@ Created: July 2021
 
 ### Program Walkthough GIF
 
-Adding name, number and email. Then searching for searching for them.
+Adding name, number and email to our Phonebook. Then searching for searching for them.
 
 <img src="https://github.com/NesQuickCoding/Phonebook/blob/main/Demo/Demo1.gif?raw=true" width=250><br>
 
-Then searching for persons personal information.
+Searching for personal information.
 
 <img src="https://github.com/NesQuickCoding/Phonebook/blob/main/Demo/Demo2.gif?raw=true" width=250><br>
 
-Updating name.
+Updating name of a person from Phonebook.
 
 <img src="https://github.com/NesQuickCoding/Phonebook/blob/main/Demo/Demo3.gif?raw=true" width=250><br>
 
