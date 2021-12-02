@@ -1,12 +1,12 @@
 # Phonebook
-Java program which demonstrates the use of Map interface to store, modify, and retrieve information.
+Java program which demonstrates the use of HashMap Data Structure to store, modify, and retrieve information.
 Submitted by: **Neslie Fernandez**
 
 Created: July 2021
 
 ### Program Walkthough GIF
 
-Adding name, number and email to our Phonebook. Then searching for searching for them.
+Adding name, number and email to our Phonebook. 
 
 <img src="https://github.com/NesQuickCoding/Phonebook/blob/main/Demo/Demo1.gif?raw=true" width=250><br>
 
