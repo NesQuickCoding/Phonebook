@@ -18,7 +18,6 @@ public class Main {
 		 ConsoleApp newSession = new ConsoleApp();
 		 newSession.start();
 		
-
 	}
 
 }
