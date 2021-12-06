@@ -22,11 +22,22 @@ public class ConsoleApp {
 		this.sc = new Scanner(System.in);
 	}
 	
-	public void start()
+	public void banner()
 	{
 		System.out.println("------------------------------------------------------");
-		System.out.println("\t\tWelcome to Phonebook");
-		System.out.println("------------------------------------------------------");
+	}
+	
+	public void titleBanner(String sampleTitle)
+	{
+		banner();
+		System.out.println(String.format("\t\t%s",sampleTitle));
+		banner();
+	}
+	
+	
+	public void start()
+	{
+		titleBanner("Welcome to Phonebook");
 		
 		// activate menu
 		menu();
@@ -38,9 +49,7 @@ public class ConsoleApp {
 	
 	public void menu()
 	{
-		System.out.println("\t\tMain Menu:");
-		
-		System.out.println("------------------------------------------------------");
+		titleBanner("Main Menu");
 		System.out.println("Available Operations:");
 		System.out.println("1 - Add a New Person");
 		System.out.println("2 - Search for Personal Information");
@@ -48,7 +57,7 @@ public class ConsoleApp {
 		System.out.println("4 - Delete Person from Phonebook");
 		System.out.println("5 - Display Listing");
 		System.out.println("0 - Quit");
-		System.out.println("------------------------------------------------------");
+		banner();
 		
 		command();
 
@@ -110,7 +119,7 @@ public class ConsoleApp {
 	// Need to rename this 
 	private void commandMenu()
 	{
-		System.out.println("------------------------------------------------------");
+		titleBanner("Command Menu");
 		System.out.println("Enter 1 for Main Menu");
 		System.out.println("Enter 0 to Quit");
 		
@@ -136,10 +145,8 @@ public class ConsoleApp {
 	private void addNewPerson()
 	{
 	
-		System.out.println("------------------------------------------------------");
-		System.out.println("Adding a new Person");
+		titleBanner("Adding New Person");
 		
-
 		Name newName = addValidName();
 		
 		PhoneNumber newNumber = addPhoneNumber(newName);
@@ -149,7 +156,7 @@ public class ConsoleApp {
 		// now we add this to our HashMap
 		phonebookMap.put(newName, new PersonalInfo(newNumber, newEmail));
 		
-		System.out.println("------------------------------------------------------");
+		banner();
 	} // end of addNumber method 
 	
 	
@@ -190,8 +197,7 @@ public class ConsoleApp {
 	// Option 1 > Add New Person > Add Phone Number
 	private PhoneNumber addPhoneNumber(Name name)
 	{
-		System.out.println("------------------------------------------------------");
-		System.out.println("Adding Phone Number");
+		titleBanner("Adding Phone Number");
 		System.out.println("Please enter " + name + "'s Phone Number");
 		
 		String phone = sc.nextLine();
@@ -211,7 +217,7 @@ public class ConsoleApp {
 		newPhone.setNumber(phoneLong);
 
 		
-		System.out.println("------------------------------------------------------");
+		banner();
 		
 		return newPhone;
 		
@@ -220,8 +226,7 @@ public class ConsoleApp {
 	// Option 1 > Add New Person > Add Email Address
 	private EmailAddress addEmailAddress(Name name)
 	{
-		System.out.println("------------------------------------------------------");
-		System.out.println("Adding Email Address");
+		titleBanner("Adding Email Address");
 		System.out.println("Please enter " + name + "'s Email Address");
 		
 		String email = sc.nextLine();
@@ -242,7 +247,7 @@ public class ConsoleApp {
 		}
 			newEmail.setEmailAddress(email);
 
-		System.out.println("------------------------------------------------------");
+		banner();
 		return newEmail;
 	} // end of addEmailAddress method
 	
@@ -250,15 +255,15 @@ public class ConsoleApp {
 	// Option 2: Personal Information 
 	public void personalInfoMenu()
 	{
-		System.out.println("------------------------------------------------------");
+		banner();
 		System.out.println("\t\tPersonal Info Menu");
-		System.out.println("------------------------------------------------------");
+		banner();
 		System.out.println("1 - Search for a Personal Info by Name");
 		System.out.println("2 - Search for Personal Info by Phone Number");
 		System.out.println("3 - Search for Personal Info by Email Address");
 		System.out.println("4 - Back To Main Menu");
 		System.out.println("0 - Exit Program");
-		System.out.println("------------------------------------------------------");
+		banner();
 		
 		piCommand();
 	} // end of personalInfoMenu method 
@@ -311,8 +316,7 @@ public class ConsoleApp {
 	// Option 2: Search for Personal Info > Search By Name 
 		private void searchByName()
 		{
-			System.out.println("------------------------------------------------------");
-			System.out.println("Searching by Name");
+			titleBanner("Searching By Name");
 			Name name = addValidName();
 			boolean found = false;
 			
@@ -334,7 +338,7 @@ public class ConsoleApp {
 						searchByName();
 					}
 					
-			System.out.println("------------------------------------------------------");
+					banner();
 			
 		} // end of searchByName method
 		
@@ -342,8 +346,7 @@ public class ConsoleApp {
 	// Option 2 : Search For Personal Info > Search By Number 
 	private void searchByNumber()
 	{
-		System.out.println("------------------------------------------------------");
-		System.out.println("Searching by Number");
+		titleBanner("Searching By Number");
 		System.out.print("Please enter the persons number: ");
 		long number = Long.parseLong(sc.nextLine());
 		boolean found = false; 
@@ -367,15 +370,14 @@ public class ConsoleApp {
 				searchByNumber();
 		 }
 
-		System.out.println("------------------------------------------------------");
+		 banner();
 		
 	}
 	
 	// Option 2: Search For Personal Info > Search By Email
 	private void searchByEmail()
 	{
-		System.out.println("------------------------------------------------------");
-		System.out.println("Searching by Email");
+		titleBanner("Searching by Email");
 		System.out.print("Please enter the persons Email Address: ");
 		String email = sc.nextLine();
 		boolean found = false; 
@@ -398,7 +400,7 @@ public class ConsoleApp {
 				searchByEmail();
 		 }
 
-		System.out.println("------------------------------------------------------");
+		 banner();
 	} // end of searchByEmail method 
 	
 
@@ -408,8 +410,9 @@ public class ConsoleApp {
 	// Ask the user which person information they would like to update
 			private void updatePI(Name name)
 			{
-				System.out.println("------------------------------------------------------");
+				banner();
 				System.out.println("Updating Person Information for: " + name);
+				banner();
 				
 				System.out.println("Enter 1 to update Name");
 				System.out.println("Enter 2 to update Phone Number");
@@ -438,7 +441,7 @@ public class ConsoleApp {
 					updatePI(name);
 				}
 				
-				System.out.println("------------------------------------------------------");
+				banner();
 			} // end of updatePI
 	
 			
@@ -522,16 +525,15 @@ public class ConsoleApp {
 	private void updateNameMenu(Name name)
 	{
 
-			System.out.println("------------------------------------------------------");
-			System.out.println("\t\tUpdate Name Menu");
+			titleBanner("Update Name Menu");
 			System.out.println(name);
-			System.out.println("------------------------------------------------------");
+			banner();
 			System.out.println("1 - Change First Name");
 			System.out.println("2 - Change Last Name");
 			System.out.println("3 - Change Full Name");
 			System.out.println("4 - Back To Main Menu");
 			System.out.println("0 - Exit Program");
-			System.out.println("------------------------------------------------------");
+			banner();
 			
 			nameCommand(name);
 	} // end of personalInfoMenu method 
@@ -619,8 +621,7 @@ public class ConsoleApp {
 	// Option 4: Delete Person from Phone Book 
 	private void deletePerson()
 	{
-		System.out.println("------------------------------------------------------");
-		System.out.println("Delete From Phonebook");
+		titleBanner("Deleting Person from Phonebook");
 		Name newName = addValidName();
 		
 		for(Name n : this.phonebookMap.keySet())
@@ -636,7 +637,7 @@ public class ConsoleApp {
 		} // end of for loop
 		
 		
-		System.out.println("------------------------------------------------------");
+		banner();
 		
 	} // end of deletePerson
 	
@@ -644,9 +645,7 @@ public class ConsoleApp {
 	// Option 5: Display Listing
 	private void displayListing()
 	{
-		System.out.println("------------------------------------------------------");
-		System.out.println("Displaying Phonebook Information");
-		System.out.println("------------------------------------------------------");
+		titleBanner("Display Phonebook Information");
 		if(this.phonebookMap.isEmpty())
 		{
 			System.out.println("Phonebook Empty");
@@ -657,7 +656,7 @@ public class ConsoleApp {
 				displayInfo(name);
 			}
 		} 
-		System.out.println("------------------------------------------------------");
+		banner();
 	
 	} // end of displayListing method 
 	
@@ -706,9 +705,7 @@ public class ConsoleApp {
 	// Option 6 : Quit
 	private void quitting()
 	{
-		System.out.println("------------------------------------------------------");
-		System.out.println("Goodbye");
-		System.out.println("------------------------------------------------------");
+		titleBanner("Goodbye");
 		System.exit(0);
 	}
 
