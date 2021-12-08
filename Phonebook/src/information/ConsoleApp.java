@@ -140,6 +140,30 @@ public class ConsoleApp {
 		
 	} // end of Command Menu
 	
+	// Need to fix this in order to optimized command Menu
+	private void commandMenu(String comm)
+	{
+		System.out.println(String.format("Enter 1 to go back to %s Menu", comm));
+		System.out.println("Enter 2 to go back to Main Menu");
+		System.out.println("Enter 0 to exit Program");
+		
+		System.out.print("Command: ");
+		String inputComm = sc.nextLine();
+		if(inputComm.equals("1"))
+		{
+			personalInfoMenu();
+		} else if(inputComm.equals("2"))
+		{
+			menu();
+		} else if(inputComm.equals("0"))
+		{
+			quitting();
+		} else {
+			System.out.println("Wrong input");
+			commandMenu(comm);
+		}
+	} // end of commanedMenu(String comm) method 
+	
 	
 	// Option 1: Add New Person
 	private void addNewPerson()
@@ -283,19 +307,19 @@ public class ConsoleApp {
 			case 1:
 				System.out.println("Searching for Personal Info by Name");
 				searchByName();
-				personalInfoMenu();
+				commandMenu("Personal Info");
 				break;
 				
 			case 2: 
 				System.out.println("Searching for Personal Info by Phone Number");
 				searchByNumber();
-				personalInfoMenu();
+				commandMenu("Personal Info");
 				break; 
 				
 			case 3:
 				System.out.println("Search for Personal Info by Email Address");
 				searchByEmail();
-				personalInfoMenu();
+				commandMenu("Personal Info");
 				break; 
 				
 			case 4: 
@@ -348,7 +372,19 @@ public class ConsoleApp {
 	{
 		titleBanner("Searching By Number");
 		System.out.print("Please enter the persons number: ");
-		long number = Long.parseLong(sc.nextLine());
+		String userInput = sc.nextLine();
+		
+		// Check if the value entered by a user has the length of 10 digits
+		while(userInput.length() != 10)
+		{
+			System.out.println("Wrong input");
+			System.out.println("Please enter the 10 digit phone number");
+			userInput = sc.nextLine();
+		}
+		
+		
+		long number = Long.parseLong(userInput);
+		
 		boolean found = false; 
 
 		for(Name n : this.phonebookMap.keySet())
@@ -664,9 +700,11 @@ public class ConsoleApp {
 	private void displayInfo(Name name)
 	{
 
+		banner();
 		displayName(name);
 		displayNumber(name);
 		displayEmail(name);
+		banner();
 
 	} // end of displayInfo method 
 	
