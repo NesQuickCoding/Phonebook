@@ -2,6 +2,8 @@ package information;
 
 import java.util.Map;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.HashMap;
 
 /**
@@ -13,12 +15,12 @@ import java.util.HashMap;
 	
 public class ConsoleApp {
 	
-	private Map<Name, PersonalInfo> phonebookMap; 
+	private Map<String, PersonalInfo> phonebookMap; 
 	private Scanner sc; 
 
 	public ConsoleApp()
 	{
-		this.phonebookMap = new HashMap<Name, PersonalInfo>();
+		this.phonebookMap = new HashMap<String, PersonalInfo>();
 		this.sc = new Scanner(System.in);
 	}
 	
@@ -56,6 +58,7 @@ public class ConsoleApp {
 		System.out.println("3 - Update Personal info");
 		System.out.println("4 - Delete Person from Phonebook");
 		System.out.println("5 - Display Listing");
+		System.out.println("6 - Export as CSV");
 		System.out.println("0 - Quit");
 		banner();
 		
@@ -171,14 +174,14 @@ public class ConsoleApp {
 	
 		titleBanner("Adding New Person");
 		
-		Name newName = addValidName();
+		String name = addValidName();
 		
-		PhoneNumber newNumber = addPhoneNumber(newName);
+		PhoneNumber newNumber = addPhoneNumber(name);
 		
-		EmailAddress newEmail = addEmailAddress(newName);
+		EmailAddress newEmail = addEmailAddress(name);
 		
 		// now we add this to our HashMap
-		phonebookMap.put(newName, new PersonalInfo(newNumber, newEmail));
+		phonebookMap.put(name, new PersonalInfo(newNumber, newEmail));
 		
 		banner();
 	} // end of addNumber method 
@@ -186,94 +189,115 @@ public class ConsoleApp {
 	
 	// Option 1 > Add New Person > Add Name
 	// This method will be used plenty of times 
-	private Name addValidName()
+	private String addValidName()
 	{
 		System.out.print("Please enter the first name: ");
-		String firstName = sc.nextLine();
-		
-		Name newName = new Name();
-		
-		while(!newName.validName(firstName))
-		{
-			System.out.println("First name is not valid, please try again");
-			System.out.print("Please enter the First name: ");
-			firstName = sc.nextLine();
-		}
-		
+		String firstName = nameValidity(sc.nextLine());
 		
 		System.out.print("Please enter the last name: ");
-		String lastName = sc.nextLine();
-		
-		while(!newName.validName(lastName))
-		{
-			System.out.println("Last name is not valid, please try again");
-			System.out.print("Please enter the Last name: ");
-			lastName = sc.nextLine();
-		}
+		String lastName = nameValidity(sc.nextLine());
 		
 		
-		newName.setName(firstName,  lastName);
+		String fullname = firstName + " " + lastName;
 		
-		return newName;
+		return fullname;	
 	} // end of addValidName method 
 	
 	
+	// this method ensures us that the name the user enters is valid 
+	
+	// To ensure the name entered is valid
+	// This can be use for both first name and last name
+	private String nameValidity(String name)
+	{
+		while(!isValidName(name))
+		{
+			System.out.println("Sorry entered name is invalid, please try again");
+			name = sc.nextLine();
+		}
+		
+		return name;
+	}
+	
+	// Checks whether a name is valid based on regex pattern
+	// returns a boolean
+	private boolean isValidName(String name)
+	{
+		Pattern validNamePattern = Pattern.compile("[a-zA-Z]*");
+		Matcher matcher = validNamePattern.matcher(name);
+		
+		return matcher.matches();
+	} // end of isValidName method 
+	
+	
 	// Option 1 > Add New Person > Add Phone Number
-	private PhoneNumber addPhoneNumber(Name name)
+	private PhoneNumber addPhoneNumber(String name)
 	{
 		titleBanner("Adding Phone Number");
 		System.out.println("Please enter " + name + "'s Phone Number");
 		
 		String phone = sc.nextLine();
-		
-		if(phone.length() != 10)
-		{
-
-			System.out.println("Phone number must be 10 digits");
-			System.out.println("Please try again.");
-			
-			addPhoneNumber(name);
-		
-		} 
-		
-		PhoneNumber newPhone = new PhoneNumber();
-		long phoneLong = Long.valueOf(phone);
-		newPhone.setNumber(phoneLong);
-
-		
+		PhoneNumber newPhone = phoneNumberValidity(name, phone);		
 		banner();
 		
 		return newPhone;
+	} // end of addPhoneNumber method 
+	
+	// To ensure the phoneNumber method is correct
+	private PhoneNumber phoneNumberValidity(String name, String phone)
+	{
+		PhoneNumber newPhone = new PhoneNumber();
 		
-	}
+		while(!newPhone.validNumber(phone))
+		{
+			System.out.println("Invalid Email Address");
+			System.out.println("Please try again");
+			System.out.println("Please enter " + name + "'s Phone Number");
+			phone = sc.nextLine();
+		}
+		
+		newPhone.setNumber(Long.parseLong(phone));
+		
+		return newPhone;
 
+	} // end of phoneNumberValidity method 
+
+	
+	
 	// Option 1 > Add New Person > Add Email Address
-	private EmailAddress addEmailAddress(Name name)
+	private EmailAddress addEmailAddress(String name)
 	{
 		titleBanner("Adding Email Address");
 		System.out.println("Please enter " + name + "'s Email Address");
 		
 		String email = sc.nextLine();
+		EmailAddress newEmail = emailValidity(name, email);
 		
-		
-		EmailAddress newEmail = new EmailAddress();
-		
-
-
-		// loop it until they enter a valid email address
-		while(newEmail.validEmail(email) == false)
-		{
-			System.out.println("Invalid Email Address");
-			System.out.println("Please try again");
-			System.out.println("Please enter " + name + "'s Email Address");
-			email = sc.nextLine();
-
-		}
-			newEmail.setEmailAddress(email);
-
 		banner();
 		return newEmail;
 	} // end of addEmailAddress method
+	
+	
+	// To ensure us that the email entered is correct 
+	private EmailAddress emailValidity(String name, String email)
+	{
+		EmailAddress newEmail = new EmailAddress(email);
+		
+				// loop it until they enter a valid email address
+				while(!newEmail.validEmail(email))
+				{
+					System.out.println("Invalid Email Address");
+					System.out.println("Please try again");
+					System.out.println("Please enter " + name + "'s Email Address");
+					email = sc.nextLine();
+
+				}
+					newEmail.setEmailAddress(email);
+					
+		return newEmail;
+	}
+	
+	
 	
 
 	// Option 2: Personal Information 
@@ -341,11 +365,11 @@ public class ConsoleApp {
 		private void searchByName()
 		{
 			titleBanner("Searching By Name");
-			Name name = addValidName();
+			String name = addValidName();
 			boolean found = false;
 			
 
-					for(Name n : this.phonebookMap.keySet())
+					for(String n : this.phonebookMap.keySet())
 					{
 						if(n.equals(name))
 						{
@@ -387,7 +411,7 @@ public class ConsoleApp {
 		
 		boolean found = false; 
 
-		for(Name n : this.phonebookMap.keySet())
+		for(String n : this.phonebookMap.keySet())
 		{
 			if(this.phonebookMap.get(n).getPhoneNumber() == number)
 			{
@@ -408,7 +432,7 @@ public class ConsoleApp {
 
 		 banner();
 		
-	}
+	} // end of searchByPhoneNumber method
 	
 	// Option 2: Search For Personal Info > Search By Email
 	private void searchByEmail()
@@ -418,7 +442,7 @@ public class ConsoleApp {
 		String email = sc.nextLine();
 		boolean found = false; 
 
-		for(Name n : this.phonebookMap.keySet())
+		for(String n : this.phonebookMap.keySet())
 		{
 			if(this.phonebookMap.get(n).getEmailAddress().equals(email))
 			{
@@ -444,7 +468,7 @@ public class ConsoleApp {
 	// Option 3 : Update Personal Information 
 	
 	// Ask the user which person information they would like to update
-			private void updatePI(Name name)
+			private void updatePI(String name)
 			{
 				banner();
 				System.out.println("Updating Person Information for: " + name);
@@ -527,11 +551,11 @@ public class ConsoleApp {
 	private void updatePerson()
 	{
 		
-		Name newName = addValidName();
+		String newName = addValidName();
 		boolean found = false; 
 		
 		
-			for(Name n: this.phonebookMap.keySet())
+			for(String n: this.phonebookMap.keySet())
 			{
 				if(n.equals(newName))
 				{
@@ -552,13 +576,13 @@ public class ConsoleApp {
 	} // end of updatePerson method 	
 	
 
-	private void updateName(Name name)
+	private void updateName(String name)
 	{
 		
 		updateNameMenu(name);
 	}
 
-	private void updateNameMenu(Name name)
+	private void updateNameMenu(String name)
 	{
 
 			titleBanner("Update Name Menu");
@@ -574,11 +598,11 @@ public class ConsoleApp {
 			nameCommand(name);
 	} // end of personalInfoMenu method 
 	
-	private void changeFirstName(Name name)
+	private void changeFirstName(String name)
 	{
 		String input_name = enterName("First");
 		
-		for(Name n : this.phonebookMap.keySet())
+		for(String n : this.phonebookMap.keySet())
 		{
 			if(n.equals(name))
 			{
@@ -628,14 +652,14 @@ public class ConsoleApp {
 	} // end of enterName method 
 	
 	
-	private void updateEmailAddress(Name name)
+	private void updateEmailAddress(String name)
 	{
 		EmailAddress newEmail = addEmailAddress(name);
 		
 		this.phonebookMap.get(name).setEmailAddress(newEmail);;
 	} // end of updateEmailAddress method 
 	
-	private void updatePhoneNumber(Name name)
+	private void updatePhoneNumber(String name)
 	{
 		PhoneNumber newNumber = addPhoneNumber(name);
 		// now we add this to our HashMap
@@ -658,24 +682,29 @@ public class ConsoleApp {
 	private void deletePerson()
 	{
 		titleBanner("Deleting Person from Phonebook");
-		Name newName = addValidName();
-		
-		for(Name n : this.phonebookMap.keySet())
-		{
-			if(n.equals(newName))
-			{
-			
-				this.phonebookMap.remove(n);
-				System.out.println("Person Deleted");
-				break;
-			}
-			
-		} // end of for loop
 		
 		
+		String name = validNameFromMap();
+		this.phonebookMap.remove(name);
+	
 		banner();
 		
 	} // end of deletePerson
+	
+	// checks whether the entered name is in our dictionary 
+	private String validNameFromMap()
+	{
+		String newName = addValidName();
+		
+		while(!this.phonebookMap.containsKey(newName))
+		{
+			System.out.println("Name cannot be found in our Phonebook");
+			System.out.println("Please try again");
+			newName = addValidName();
+		}
+		
+		return newName;
+	} // end of validNameFromMap method 
 	
 	
 	// Option 5: Display Listing
@@ -687,7 +716,7 @@ public class ConsoleApp {
 			System.out.println("Phonebook Empty");
 		}
 		else {
-			for(Name name : this.phonebookMap.keySet())
+			for(String name : this.phonebookMap.keySet())
 			{
 				displayInfo(name);
 			}
@@ -697,7 +726,7 @@ public class ConsoleApp {
 	} // end of displayListing method 
 	
 	// Display Person's name, number, email
-	private void displayInfo(Name name)
+	private void displayInfo(String name)
 	{
 
 		banner();
@@ -708,17 +737,17 @@ public class ConsoleApp {
 
 	} // end of displayInfo method 
 	
-	public void displayName(Name name)
+	public void displayName(String name)
 	{
 		System.out.println("Name: " + name);
 	} // end of displayName method 
 	
-	public void displayNumber(Name name)
+	public void displayNumber(String name)
 	{
 		System.out.println("Phone Number: " + convertNumber(this.phonebookMap.get(name).getPhoneNumber()));
 	} // end of displayNumber method 
 	
-	public void displayEmail(Name name)
+	public void displayEmail(String name)
 	{
 		System.out.println("Email Address: " + this.phonebookMap.get(name).getEmailAddress());
 	} // end of displayEmail method 

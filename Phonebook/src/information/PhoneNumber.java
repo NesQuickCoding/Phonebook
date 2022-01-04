@@ -1,5 +1,8 @@
 package information;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class PhoneNumber{
 	private long number; 
 	
@@ -20,6 +23,17 @@ public class PhoneNumber{
 	public long getNumber()
 	{
 		return this.number; 
+	}
+	
+	
+	// This method ensures us the number entered by the user is 10 digits long and it's an integer type
+	public boolean validNumber(String number)
+	{
+		Pattern validEmail = Pattern.compile("^[0-9]{10}");
+		Matcher matcher = validEmail.matcher(number);
+		
+		boolean isValid = matcher.find();
+		return isValid;
 	}
 	
 	// we need to override equals method

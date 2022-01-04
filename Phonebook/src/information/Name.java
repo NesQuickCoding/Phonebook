@@ -3,6 +3,8 @@ package information;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// Pending - Check whether we still need this
+
 public class Name {
 	
 	private String firstName;
