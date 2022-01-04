@@ -48,12 +48,21 @@ public class PhoneNumber{
 		return false; 
 	}
 	
+	// Method to convert the number into (***) ***-**** form
+	// This returns a String
+	private String convertNumber(Long number)
+	{
+		String num = Long.toString(number);
+		
+		// Reference https://howtodoinjava.com/java/string/format-phone-number/
+		String updatedNumber = num.replaceFirst("(\\d{3})(\\d{3})(\\d{4})", "($1) $2-$3");
+		
+		return updatedNumber;
+	}
+	
 	public String toString()
 	{
-		String header = "******Phone Number******"; 
-		String footer = "*************************";
-		
-		return header + "/n" + "Phone Number: " + this.number + "\n" + footer; 
+		return convertNumber(this.number);
 	}
 	
 

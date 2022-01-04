@@ -7,9 +7,13 @@ import java.util.regex.Pattern;
 import java.util.HashMap;
 
 /**
- * Resources 
- * https://howtodoinjava.com/java/string/format-phone-number/ for formating phone number
- * @author Neslie
+ * References:
+ * https://howtodoinjava.com/java/string/format-phone-number/ 
+ * https://www.baeldung.com/java-csv
+ * https://www.geeksforgeeks.org/how-to-convert-hashmap-to-arraylist-in-java/
+ * 
+ * 
+ * @author Neslie Fernandez
  *
  */
 	
@@ -108,6 +112,9 @@ public class ConsoleApp {
 				commandMenu();
 				break; 
 						
+			case 6:
+				System.out.println("Exporting as CSV");
+				
 			case 0:
 				System.out.println("Quit");
 				quitting();
@@ -504,49 +511,7 @@ public class ConsoleApp {
 				banner();
 			} // end of updatePI
 	
-			
-	private void nameCommand(Name name)
-	{
-		System.out.print("Enter your command: ");
-		
-		String userCommand = sc.nextLine();
-		
-		int userCommandInt = Integer.parseInt(userCommand);
-			
-			switch(userCommandInt)
-			{
-			case 1:
-				System.out.println("Changing First Name");
-				changeFirstName(name);
-				updateNameMenu(name);
-				break;
-				
-			case 2: 
-				System.out.println("Changing Last Name");
-				changeLastName(name);
-				updateNameMenu(name);
-				break; 
-				
-			case 3:
-				System.out.println("Changing Full Name");
-				changeFullName(name);
-				updateNameMenu(name);
-				break; 
-				
-			case 4: 
-				System.out.println("Back to Main Menu");
-				menu();
-				break;
-				
-			case 0:
-				System.out.println("Exiting Program");
-				quitting();
-				break; 
-			}
 
-	} // end of name NameCommand Menu
-	
-	
 	// This method update the Persons Name (Object)
 	private void updatePerson()
 	{
@@ -595,41 +560,88 @@ public class ConsoleApp {
 			System.out.println("0 - Exit Program");
 			banner();
 			
-			nameCommand(name);
+			commandNameChange(name);
 	} // end of personalInfoMenu method 
 	
-	private void changeFirstName(String name)
+	
+	
+	private boolean isValidCommand(String comm, int num)
+	{
+		// convert the String into a int 
+		int userCommandInt = Integer.parseInt(comm);
+		
+		if(userCommandInt >= 0 && userCommandInt <= num)
+		{
+			return true;
+		}
+		
+		return false; 
+	}
+	
+	
+	// Optimized command 
+	// Pass by Value, Object is a Reference
+	private void commandNameChange(String name)
+	{
+		System.out.print("Enter your command: ");
+		
+		String userCommand = sc.nextLine();
+		
+		while(!isValidCommand(userCommand,5))
+		{
+			System.out.println("Invalid Command, please try again");
+			userCommand = sc.nextLine();
+		}
+			
+		name = changeName(name, userCommand);
+	} // end of name NameCommand Menu
+	
+
+	// Method to split the name into two
+	private String[] nameArray(String name)
+	{
+		String[] nameArray = name.split(name);
+		return nameArray;
+	}
+	
+	private String nameArrayToString(String[] name)
+	{
+		return name[0] + " " + name[1];
+	}
+	
+	private void changeFirstName(String[] name)
 	{
 		String input_name = enterName("First");
-		
-		for(String n : this.phonebookMap.keySet())
-		{
-			if(n.equals(name))
-			{
-				n.setFirstName(input_name);
-			}
-			
-		} // end of for loop 
+		name[0] = input_name;
 	} // end of changingFirstName method 
 		
-	private void changeLastName(Name name)
+	private void changeLastName(String[] name)
 	{
 		String input_name = enterName("Last");
-		
-		for(Name n : this.phonebookMap.keySet())
-		{
-			if(n.equals(name))
-			{
-				n.setLastName(input_name);
-			}
-			
-		} // end of for loop 
+		name[1] = input_name;
+
 	} // end of changingLastName method 
 	
-	private void changeFullName(Name name)
+	// This helps us choose which part of the name to change 
+	private String changeName(String sampleName, String choice)
 	{
-		changeFirstName(name);
-		changeLastName(name);
+		// converts our String to a String Array
+		String[] name = nameArray(sampleName);
+				
+		if(choice.equals("1"))
+		{
+			changeFirstName(name);
+		} else if(choice.equals("2"))
+		{
+			changeLastName(name);
+		} else {
+			// We Assume full name
+			changeFirstName(name);
+			changeLastName(name);
+		}
+		
+		// Returns the reconstructed String Arrray back to String
+		return nameArrayToString(name);
 	} // end of changeFullName method 
 	
 	
@@ -769,7 +781,11 @@ public class ConsoleApp {
 //	}
 	
 	
-	// Option 6 : Quit
+	
+	// Option 6: Export as CSV
+	
+	
+	// Option 0 : Quit
 	private void quitting()
 	{
 		titleBanner("Goodbye");

@@ -34,13 +34,7 @@ public class EmailAddress{
 	
 	public String toString()
 	{
-		
-
-		String header = "******Email Address******"; 
-		String footer = "*************************";
-			
-		return header + "\n" + "Email address: " + this.email + footer; 
-
+		return this.email;
 	}
 	
 }

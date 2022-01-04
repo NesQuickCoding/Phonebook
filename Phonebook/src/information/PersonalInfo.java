@@ -44,10 +44,7 @@ public class PersonalInfo implements Information{
 	
 	public String toString()
 	{
-		String header = "******Personal Info******"; 
-		String footer = "*************************";
-		
-		return header + "\n" + this.number + "\n" + this.email + "\n" + footer; 
+		return String.valueOf(this.number) + "," + String.valueOf(this.email);
 	}
 
 	@Override
