@@ -21,6 +21,11 @@ public class Main {
 		 //ConsoleApp newSession = new ConsoleApp();
 		 //newSession.start();
 		
+		
+		UI newSession = new UI();
+		newSession.start();
+		
+		/**
 		// Testing Phone Number
 		List<String[]> sampleList = new ArrayList<String[]>();
 		Map<String, PersonalInfo> map = new HashMap<>();
@@ -49,7 +54,7 @@ public class Main {
 		//System.out.println(Arrays.toString(Arrays.toString(sampleAList)));
 		//System.out.println(newList);
 		
-		
+		*/
 	}
 
 }

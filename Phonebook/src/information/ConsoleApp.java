@@ -493,6 +493,7 @@ public class ConsoleApp {
 				{
 				case "1":
 					updateName(name);
+					break;
 				case "2":
 					updatePhoneNumber(name);
 					break;
@@ -600,7 +601,7 @@ public class ConsoleApp {
 	// Method to split the name into two
 	private String[] nameArray(String name)
 	{
-		String[] nameArray = name.split(name);
+		String[] nameArray = name.split(" ");
 		return nameArray;
 	}
 	
@@ -609,17 +610,20 @@ public class ConsoleApp {
 		return name[0] + " " + name[1];
 	}
 	
-	private void changeFirstName(String[] name)
+	private String[] changeFirstName(String[] name)
 	{
 		String input_name = enterName("First");
 		name[0] = input_name;
+		
+		return name;
 	} // end of changingFirstName method 
 		
-	private void changeLastName(String[] name)
+	private String[] changeLastName(String[] name)
 	{
 		String input_name = enterName("Last");
 		name[1] = input_name;
 
+		return name;
 	} // end of changingLastName method 
 	
 	// This helps us choose which part of the name to change 
@@ -630,14 +634,14 @@ public class ConsoleApp {
 				
 		if(choice.equals("1"))
 		{
-			changeFirstName(name);
+			name = changeFirstName(name);
 		} else if(choice.equals("2"))
 		{
-			changeLastName(name);
+			name = changeLastName(name);
 		} else {
 			// We Assume full name
-			changeFirstName(name);
-			changeLastName(name);
+			name = changeFirstName(name);
+			name = changeLastName(name);
 		}
 		
 		// Returns the reconstructed String Arrray back to String
