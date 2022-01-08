@@ -694,33 +694,6 @@ public class ConsoleApp {
 	}
 	
 
-	// Option 4: Delete Person from Phone Book 
-	private void deletePerson()
-	{
-		titleBanner("Deleting Person from Phonebook");
-		
-		
-		String name = validNameFromMap();
-		this.phonebookMap.remove(name);
-	
-		banner();
-		
-	} // end of deletePerson
-	
-	// checks whether the entered name is in our dictionary 
-	private String validNameFromMap()
-	{
-		String newName = addValidName();
-		
-		while(!this.phonebookMap.containsKey(newName))
-		{
-			System.out.println("Name cannot be found in our Phonebook");
-			System.out.println("Please try again");
-			newName = addValidName();
-		}
-		
-		return newName;
-	} // end of validNameFromMap method 
 	
 	
 	// Option 5: Display Listing

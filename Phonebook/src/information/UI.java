@@ -1,12 +1,17 @@
 package information;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UI {
+	
+	
 	private Map<String, PersonalInfo> phonebookMap; 
 	private Scanner sc; 
 
@@ -16,19 +21,7 @@ public class UI {
 		this.phonebookMap = new HashMap<String, PersonalInfo>();
 		this.sc = new Scanner(System.in);
 	}
-	
-	public void banner()
-	{
-		System.out.println("------------------------------------------------------");
-	}
-	
-	public void titleBanner(String sampleTitle)
-	{
-		banner();
-		System.out.println(String.format("\t\t%s",sampleTitle));
-		banner();
-	}
-	
+
 
 	/***********************************************************************/	
 	// Start
@@ -45,6 +38,11 @@ public class UI {
 		command();
 	} // end of start method 
 	
+	
+	
+	/***********************************************************************/	
+	// Main Menu
+	/***********************************************************************/	
 	public void menu()
 	{
 		titleBanner("Main Menu");
@@ -87,20 +85,20 @@ public class UI {
 				
 			case 3:
 				System.out.println("Update Person Info");
-				//updatePerson();
+				updatePerson();
 				commandMenu();
 				break;
 				
 			case 4:
 				System.out.println("Delete Person from Phonebook");
-				//deletePerson();
+				deletePerson();
 				commandMenu();
 				break;
 
 				
 			case 5:
 				System.out.println("Display listing");
-				//displayListing();
+				displayListing();
 				commandMenu();
 				break; 
 						
@@ -220,24 +218,7 @@ public class UI {
 			return newPhone;
 		} // end of addPhoneNumber method 
 		
-		// To ensure the phoneNumber method is correct
-		private PhoneNumber phoneNumberValidity(String name, String phone)
-		{
-			PhoneNumber newPhone = new PhoneNumber();
-			
-			while(!newPhone.validNumber(phone))
-			{
-				System.out.println("Invalid Email Address");
-				System.out.println("Please try again");
-				System.out.println("Please enter " + name + "'s Phone Number");
-				phone = sc.nextLine();
-			}
-			
-			newPhone.setNumber(Long.parseLong(phone));
-			
-			return newPhone;
-
-		} // end of phoneNumberValidity method 
+		
 
 		
 		
@@ -255,24 +236,7 @@ public class UI {
 		} // end of addEmailAddress method
 		
 		
-		// To ensure us that the email entered is correct 
-		private EmailAddress emailValidity(String name, String email)
-		{
-			EmailAddress newEmail = new EmailAddress(email);
-			
-					// loop it until they enter a valid email address
-					while(!newEmail.validEmail(email))
-					{
-						System.out.println("Invalid Email Address");
-						System.out.println("Please try again");
-						System.out.println("Please enter " + name + "'s Email Address");
-						email = sc.nextLine();
-
-					}
-						newEmail.setEmailAddress(email);
-						
-			return newEmail;
-		} // end of rmailValidity method
+		
 		
 		
 		
@@ -443,9 +407,148 @@ public class UI {
 		} // end of searchByEmail method 
 		
 
-		
-		
+	/***********************************************************************/	
+	// Option 3 : Update Personal Info
+	/***********************************************************************/
 	
+	// Better Approach
+	private void updatePI(String name)
+	{
+		banner();
+		System.out.println("Updating Person Information for: " + name);
+		banner();
+		
+		System.out.println("Enter 1 to update Name");
+		System.out.println("Enter 2 to update Phone Number");
+		System.out.println("Enter 3 to update Email Address");
+		System.out.println("Enter 0 to go back to Main Menu");
+		
+		System.out.print("Command: ");
+		String comm = sc.nextLine();
+		
+		switch(comm)
+		{
+		case "1":
+			//updateName(name);
+			break;
+		case "2":
+			updatePhoneNumber(name);
+			break;
+		case "3":
+			updateEmailAddress(name);
+			break;
+		case "0":
+			commandMenu();
+			break;
+			
+		default: 
+			System.out.println("Wrong input, please try again");
+			updatePI(name);
+		}
+		
+		banner();
+	} // end of updatePI method 
+	
+	
+	private void updatePerson()
+	{
+		
+		String newName = addValidName();
+		boolean found = false; 
+		
+		
+			for(String n: this.phonebookMap.keySet())
+			{
+				if(n.equals(newName))
+				{
+					System.out.println("Person Found");
+					found = true;
+					updatePI(n);
+					
+				} 
+				
+			} // end of for loop 
+			
+			if(found == false)
+			{
+				System.out.println("Person not found, please try again");
+				updatePerson();
+			}
+
+	} // end of updatePerson method 	
+	
+
+	private void updatePhoneNumber(String name)
+	{
+		PhoneNumber newNumber = addPhoneNumber(name);
+		// now we add this to our HashMap
+		this.phonebookMap.get(name).setPhoneNumber(newNumber);
+		String message = String.format("%'s phone number has been updated.", name);
+		System.out.println(message);
+	} // end of updatePhoneNumber method 
+	
+	
+	private void updateEmailAddress(String name)
+	{
+		EmailAddress newEmail = addEmailAddress(name);
+		
+		this.phonebookMap.get(name).setEmailAddress(newEmail);;
+
+		String message = String.format("%s's email address has been updated.", name);
+		System.out.println(message);
+	} // end of updateEmailAddress method 
+	
+
+		
+	/***********************************************************************/	
+	// Option 4 : Delete Person from Phonebook
+	/***********************************************************************/	
+	
+		// Option 4: Delete Person from Phone Book 
+		private void deletePerson()
+		{
+			titleBanner("Deleting Person from Phonebook");
+			
+			String name = validNameFromMap();
+			this.phonebookMap.remove(name);
+		
+			String message = String.format("%s has been deleted from Phonebook", name);
+			System.out.println(message);
+			banner();
+			
+		} // end of deletePerson
+		
+		
+	/***********************************************************************/	
+	// Option 5 : Display Listing
+	/***********************************************************************/		
+		
+	private void displayListing()
+	{
+		titleBanner("Display Phonebook Information");
+		String message = String.format("Phonebook size: %s", this.phonebookMap.size());
+		System.out.println(message);
+
+		if(this.phonebookMap.isEmpty())
+		{
+			System.out.println("Phonebook Empty");
+		}
+		else {
+			List<String> names = sortKeys(this.phonebookMap);
+			
+			for(String name : names)
+			{
+				displayInfo(name);
+			}
+		} 
+		banner();
+	
+		
+	} // end of displayListing method 
+		
+	/***********************************************************************/	
+	// Option 6 : Export as CSV
+	/***********************************************************************/		
 
 	/***********************************************************************/	
 	// Option 0 : Quit
@@ -469,7 +572,6 @@ public class UI {
 		displayName(name);
 		displayNumber(name);
 		displayEmail(name);
-		banner();
 
 	} // end of displayInfo method 
 	
@@ -503,6 +605,21 @@ public class UI {
 		String updatedNumber = number.replaceFirst("(\\d{3})(\\d{3})(\\d{4})", "($1) $2-$3");
 		
 		return updatedNumber;
+	} // end of convertNumber method 
+	
+	
+	
+	/***********************************************************************/	
+	// Input
+	/***********************************************************************/	
+	
+	private String inputNumber(String name)
+	{
+		String message = String.format("Please enter %s's phone number", name);
+		System.out.println(message);
+		String input = sc.nextLine();
+		
+		return input;
 	}
 	
 	/***********************************************************************/	
@@ -532,11 +649,128 @@ public class UI {
 			return matcher.matches();
 		} // end of isValidName method 
 		
-	
+		
+		// checks whether the entered name is in our dictionary 
+		private String validNameFromMap()
+		{
+			String newName = addValidName();
+			
+			while(!this.phonebookMap.containsKey(newName))
+			{
+				System.out.println("Name cannot be found in our Phonebook");
+				System.out.println("Please try again");
+				newName = addValidName();
+			}
+			
+			return newName;
+		} // end of validNameFromMap method 
+
+		
+		// To ensure us that the email entered is correct 
+				private EmailAddress emailValidity(String name, String email)
+				{
+					EmailAddress newEmail = new EmailAddress(email);
+					
+							// loop it until they enter a valid email address
+							while(!newEmail.validEmail(email))
+							{
+								System.out.println("Invalid Email Address");
+								System.out.println("Please try again");
+								System.out.println("Please enter " + name + "'s Email Address");
+								email = sc.nextLine();
+
+							}
+								newEmail.setEmailAddress(email);
+								
+					return newEmail;
+				} // end of emailValidity method
+				
+				// To ensure the phoneNumber method is correct
+				private PhoneNumber phoneNumberValidity(String name, String phone)
+				{
+					
+					while(phone.length() < 10)
+					{
+						System.out.println("Invalid Phone Number length please try again");
+						phone = inputNumber(name);
+						
+					}
+				
+					PhoneNumber newPhone = new PhoneNumber();
+					
+					while(!newPhone.validNumber(phone))
+					{
+						System.out.println("Invalid Phone Number");
+						System.out.println("Please try again");
+						phone = inputNumber(name);
+					}
+					
+					newPhone.setNumber(Long.parseLong(phone));
+					
+					return newPhone;
+
+				} // end of phoneNumberValidity method 
+				
+					
 		/***********************************************************************/	
-		// Display
+		// For Display Purpose
 		/***********************************************************************/
 		
 		
+		public void tBanner()
+		{
+			System.out.println("======================================================");
+		}
+						
+		public void banner()
+		{
+			System.out.println("------------------------------------------------------");
+		}
+		
+		public void titleBanner(String sampleTitle)
+		{
+			tBanner();
+			System.out.println(String.format("\t\t%s",sampleTitle));
+			tBanner();
+		}
+		
+		/***********************************************************************/	
+		// Sorting
+		/***********************************************************************/	
+		private List<String> sortKeys(Map<String, PersonalInfo> map2)
+		{
+			// Reference
+			//https://stackoverflow.com/questions/922528/how-to-sort-map-values-by-key-in-java
+			List<String> sortedKeys = new ArrayList<String>(map2.keySet());
+			Collections.sort(sortedKeys);
+			
+			return sortedKeys;
+		} // end of sortMap method 
+		
+		/***********************************************************************/	
+		// Unused Methods
+		/***********************************************************************/				
+		private boolean isValidCommand(String comm, int num)
+		{
+			// convert the String into a int 
+			int userCommandInt = Integer.parseInt(comm);
+			
+			if(userCommandInt >= 0 && userCommandInt <= num)
+			{
+				return true;
+			}
+			
+			return false; 
+		} // end of isValidCommand method 
+				
+		/***********************************************************************/	
+		// To Do
+		/***********************************************************************/
+		// Still need to fix Updating First Name and Last Name
+		// Still need to export as CSV 
+		// Safety
+		// Numbers cannot match with pre existing 
+		// Email cannot match with pre existing
+		// Display Listing, have it display only names, only numbers, only emails
 	
 } // end
