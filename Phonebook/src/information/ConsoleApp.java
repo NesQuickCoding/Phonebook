@@ -174,6 +174,9 @@ public class ConsoleApp {
 		}
 	} // end of commanedMenu(String comm) method 
 	
+/*********************************************************************/
+/** 			Option 1: Add a New Person							 */
+/*********************************************************************/
 	
 	// Option 1: Add New Person
 	private void addNewPerson()
@@ -304,8 +307,10 @@ public class ConsoleApp {
 		return newEmail;
 	}
 	
-	
-	
+
+/*********************************************************************/
+/** 		Option 2: Search for Personal Information			     */
+/*********************************************************************/	
 
 	// Option 2: Personal Information 
 	public void personalInfoMenu()
@@ -472,6 +477,10 @@ public class ConsoleApp {
 	
 
 
+/*********************************************************************/
+/** 		Option 3: Update Personal Information    			     */
+/*********************************************************************/	
+	
 	// Option 3 : Update Personal Information 
 	
 	// Ask the user which person information they would like to update
@@ -487,12 +496,20 @@ public class ConsoleApp {
 				System.out.println("Enter 0 to go back to Main Menu");
 				
 				System.out.print("Command: ");
-				String comm = sc.nextLine();
+				String comm = validCommand(3);
 				
+				updatePICommand(comm, name);
+
+				
+				banner();
+			} // end of updatePI
+			
+			private void updatePICommand(String comm, String name)
+			{
 				switch(comm)
 				{
 				case "1":
-					updateName(name);
+					updateNameMenu(name);
 					break;
 				case "2":
 					updatePhoneNumber(name);
@@ -508,9 +525,7 @@ public class ConsoleApp {
 					System.out.println("Wrong input, please try again");
 					updatePI(name);
 				}
-				
-				banner();
-			} // end of updatePI
+			}
 	
 
 	// This method update the Persons Name (Object)
@@ -542,12 +557,6 @@ public class ConsoleApp {
 	} // end of updatePerson method 	
 	
 
-	private void updateName(String name)
-	{
-		
-		updateNameMenu(name);
-	}
-
 	private void updateNameMenu(String name)
 	{
 
@@ -565,37 +574,37 @@ public class ConsoleApp {
 	} // end of personalInfoMenu method 
 	
 	
-	
-	private boolean isValidCommand(String comm, int num)
-	{
-		// convert the String into a int 
-		int userCommandInt = Integer.parseInt(comm);
-		
-		if(userCommandInt >= 0 && userCommandInt <= num)
-		{
-			return true;
-		}
-		
-		return false; 
-	}
-	
-	
 	// Optimized command 
 	// Pass by Value, Object is a Reference
 	private void commandNameChange(String name)
 	{
 		System.out.print("Enter your command: ");
 		
-		String userCommand = sc.nextLine();
-		
-		while(!isValidCommand(userCommand,5))
-		{
-			System.out.println("Invalid Command, please try again");
-			userCommand = sc.nextLine();
-		}
-			
+		String userCommand = validCommand(4);
 		name = changeName(name, userCommand);
 	} // end of name NameCommand Menu
+	
+	
+	// Method to check if a command is valid
+	// A command is valid if the command is within the num range
+	private String validCommand(int num)
+	{
+		System.out.print("Enter your command: ");
+		String comm = sc.nextLine();
+		
+		// convert the String into a int 
+		int userCommandInt = Integer.parseInt(comm);
+		
+		while(userCommandInt < 0 || userCommandInt > num)
+		{
+			System.out.println("Invalid command, please try again");
+			userCommandInt = Integer.parseInt(sc.nextLine());
+		}
+		
+		// if all is valid we return the userCommand
+		return String.valueOf(userCommandInt);
+	}
+	
 	
 
 	// Method to split the name into two
@@ -652,18 +661,11 @@ public class ConsoleApp {
 	// This method can be used for First Name or Last Name depending on what the user enters as an input 
 	private String enterName(String pos)
 	{
-		System.out.print(String.format("Please enter the %s name: ", pos));
-		String name = sc.nextLine();
+		String message = String.format("Please enter the new %s name:", pos);
+		System.out.print(message);
 		
-		Name newName = new Name();
-		
-		while(!newName.validName(name))
-		{
-			System.out.println(String.format("Entered %s name is not valid, please try again", pos));
-			System.out.print(String.format("Please enter the %s name: ", pos));
-			name = sc.nextLine();
-		}
-		
+		String name = nameValidity(sc.nextLine());
+	
 		return name;
 	} // end of enterName method 
 	
@@ -694,6 +696,32 @@ public class ConsoleApp {
 	}
 	
 
+/*********************************************************************/
+/** 				Option 4: Delete Person from Phonebook 			 */
+/*********************************************************************/	
+
+		private void deletePerson() {
+			
+			System.out.println("Enter the name of the person you would like to delete");
+			String name = addValidName();
+			
+			if(!this.phonebookMap.containsKey(name))
+			{
+				System.out.println("Name found, please try again");
+				deletePerson();
+			}
+			
+			System.out.println("Name Found.");
+			this.phonebookMap.remove(name);
+			String message = String.format("%s has been removed.", name);
+			System.out.println(message);
+		} // end of deletePerson method
+		
+
+	
+/*********************************************************************/
+/** 			Option 5: Display Listing						     */
+/*********************************************************************/	
 	
 	
 	// Option 5: Display Listing
@@ -758,11 +786,18 @@ public class ConsoleApp {
 //	}
 	
 	
-	
+/*********************************************************************/
+/** 				Option 6: Export as CSV							 */
+/*********************************************************************/	
+
 	// Option 6: Export as CSV
 	
 	
-	// Option 0 : Quit
+	
+/*********************************************************************/
+/** 				Option 0: Quit					     			 */
+/*********************************************************************/	
+
 	private void quitting()
 	{
 		titleBanner("Goodbye");
