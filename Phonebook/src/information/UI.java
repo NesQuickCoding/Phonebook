@@ -236,10 +236,6 @@ public class UI {
 		} // end of addEmailAddress method
 		
 		
-		
-		
-		
-		
 	/***********************************************************************/	
 	// Option 2 : Search for Personal Information 
 	/***********************************************************************/	
@@ -429,7 +425,7 @@ public class UI {
 		switch(comm)
 		{
 		case "1":
-			//updateName(name);
+			updateNameMenu(name);
 			break;
 		case "2":
 			updatePhoneNumber(name);
@@ -448,6 +444,114 @@ public class UI {
 		
 		banner();
 	} // end of updatePI method 
+	
+	
+	private void updateNameMenu(String name)
+	{
+		banner();
+		System.out.println("Choose Part of the name to update for: " + name);
+		banner();
+		
+		System.out.println("Enter 1 to update First Name");
+		System.out.println("Enter 2 to update Last Name");
+		System.out.println("Enter 3 to update Full Name");
+		System.out.println("Enter 0 to go back to Main Menu");
+		
+		System.out.print("Command: ");
+		String comm = sc.nextLine();
+	
+		switch(comm)
+		{
+		case "1":
+			updateFirstName(name);
+			break;
+		case "2":
+			updateLastName(name);
+			break;
+		case "3":
+			updateFullName(name);
+			break;
+		case "0":
+			commandMenu();
+			break;
+			
+		default: 
+			System.out.println("Wrong input, please try again");
+			updatePI(name);
+		}
+		
+	}
+	
+	
+	private void updateFirstName(String name)
+	{
+		PersonalInfo temp = this.phonebookMap.get(name);
+	
+		// separate the lastName
+		String lastName = name.split(" ")[1];
+	
+		String newName = updateValidName(name, "first");
+		
+		newName = newName + " " + lastName;
+		
+		// remove the old from our map
+		this.phonebookMap.remove(name);
+		
+		// add the new from our map 
+		this.phonebookMap.put(newName, temp);
+		
+		displayUpdatedName(name, newName);
+	}
+	
+	private void updateLastName(String name)
+	{
+		PersonalInfo temp = this.phonebookMap.get(name);
+		
+		// separate the first name
+		String firstName = name.split(" ")[0];
+		
+		String newName = updateValidName(name, "last");
+		
+		newName = firstName + " " + newName;
+		
+		this.phonebookMap.remove(name);
+		
+		this.phonebookMap.put(newName, temp);
+		
+		displayUpdatedName(name, newName);
+	}
+	
+	private void updateFullName(String name)
+	{
+		PersonalInfo temp = this.phonebookMap.get(name);
+		
+		String firstName = updateValidName(name, "first");
+		String lastName = updateValidName(name, "last");
+		
+		String newName = firstName + " " + lastName;
+		
+		this.phonebookMap.remove(name);
+		
+		this.phonebookMap.put(newName, temp);
+		
+		displayUpdatedName(name, newName);
+	}
+		
+	
+	private String updateValidName(String name, String type)
+	{
+		String message = String.format("Please enter %s's new %s name: ", name, type);
+		System.out.print(message);
+		String newName = nameValidity(sc.nextLine());
+
+		return newName;	
+	} // end of addValidName method 
+	
+	private void displayUpdatedName(String oldName, String newName)
+	{
+		String message = String.format("Name Updated: From %s to %s",oldName, newName);
+		System.out.println(message);
+	}
 	
 	
 	private void updatePerson()
@@ -766,11 +870,10 @@ public class UI {
 		/***********************************************************************/	
 		// To Do
 		/***********************************************************************/
-		// Still need to fix Updating First Name and Last Name
 		// Still need to export as CSV 
 		// Safety
 		// Numbers cannot match with pre existing 
 		// Email cannot match with pre existing
-		// Display Listing, have it display only names, only numbers, only emails
+		// Display Listing, have it display options: only names, only numbers, only emails
 	
 } // end
