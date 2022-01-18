@@ -22,15 +22,15 @@ public class Main {
 		 //newSession.start();
 		
 		
-		UI newSession = new UI();
+		ConsoleApp newSession = new ConsoleApp();
 		newSession.start();
-		
+
 		/**
-		// Testing Phone Number
+		// Testing Excel : Success
 		List<String[]> sampleList = new ArrayList<String[]>();
 		Map<String, PersonalInfo> map = new HashMap<>();
 		
-		String name = "Cody Spaghetti";
+		String name = "Cody SpaghettiO";
 		long num = 1234567890;
 		PhoneNumber numero = new PhoneNumber(num);
 		
@@ -40,8 +40,12 @@ public class Main {
 		PersonalInfo newPerson = new PersonalInfo(numero,email);
 		map.put(name, newPerson);
 		
+		Excel_Utility.createExcel(map);
+		
+		*/
 		//System.out.println(map);
 		
+		/**
 		String sampleValue = map.get(name).toString();
 		//System.out.println(sampleValue);
 		
@@ -49,12 +53,12 @@ public class Main {
 		System.out.println(Arrays.toString(CSV_Utility.splitValueToArray(sampleValue)));
 		
 		List<String[]> sampleAList = CSV_Utility.convertToList(map);
-		
+		*/
 		// Still need to fix this
 		//System.out.println(Arrays.toString(Arrays.toString(sampleAList)));
 		//System.out.println(newList);
 		
-		*/
+	
 	}
 
 }

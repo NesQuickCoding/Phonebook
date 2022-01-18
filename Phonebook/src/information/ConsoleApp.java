@@ -4,7 +4,10 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * References:
@@ -62,7 +65,7 @@ public class ConsoleApp {
 		System.out.println("3 - Update Personal info");
 		System.out.println("4 - Delete Person from Phonebook");
 		System.out.println("5 - Display Listing");
-		System.out.println("6 - Export as CSV");
+		System.out.println("6 - Export as an Excel File");
 		System.out.println("0 - Quit");
 		banner();
 		
@@ -113,7 +116,9 @@ public class ConsoleApp {
 				break; 
 						
 			case 6:
-				System.out.println("Exporting as CSV");
+				System.out.println("Exporting as Excel File");
+				exportExcel();
+				break;
 				
 			case 0:
 				System.out.println("Quit");
@@ -481,54 +486,158 @@ public class ConsoleApp {
 /** 		Option 3: Update Personal Information    			     */
 /*********************************************************************/	
 	
-	// Option 3 : Update Personal Information 
 	
-	// Ask the user which person information they would like to update
-			private void updatePI(String name)
-			{
-				banner();
-				System.out.println("Updating Person Information for: " + name);
-				banner();
-				
-				System.out.println("Enter 1 to update Name");
-				System.out.println("Enter 2 to update Phone Number");
-				System.out.println("Enter 3 to update Email Address");
-				System.out.println("Enter 0 to go back to Main Menu");
-				
-				System.out.print("Command: ");
-				String comm = validCommand(3);
-				
-				updatePICommand(comm, name);
-
-				
-				banner();
-			} // end of updatePI
+	/***********************************************************************/	
+	// Option 3 : Update Personal Info
+	/***********************************************************************/
+	
+	// Better Approach
+	private void updatePI(String name)
+	{
+		banner();
+		System.out.println("Updating Person Information for: " + name);
+		banner();
+		
+		System.out.println("Enter 1 to update Name");
+		System.out.println("Enter 2 to update Phone Number");
+		System.out.println("Enter 3 to update Email Address");
+		System.out.println("Enter 0 to go back to Main Menu");
+		
+		System.out.print("Command: ");
+		String comm = sc.nextLine();
+		
+		switch(comm)
+		{
+		case "1":
+			updateNameMenu(name);
+			break;
+		case "2":
+			updatePhoneNumber(name);
+			break;
+		case "3":
+			updateEmailAddress(name);
+			break;
+		case "0":
+			commandMenu();
+			break;
 			
-			private void updatePICommand(String comm, String name)
-			{
-				switch(comm)
-				{
-				case "1":
-					updateNameMenu(name);
-					break;
-				case "2":
-					updatePhoneNumber(name);
-					break;
-				case "3":
-					updateEmailAddress(name);
-					break;
-				case "0":
-					commandMenu();
-					break;
-					
-				default: 
-					System.out.println("Wrong input, please try again");
-					updatePI(name);
-				}
-			}
+		default: 
+			System.out.println("Wrong input, please try again");
+			updatePI(name);
+		}
+		
+		banner();
+	} // end of updatePI method 
 	
+	
+	private void updateNameMenu(String name)
+	{
+		banner();
+		System.out.println("Choose Part of the name to update for: " + name);
+		banner();
+		
+		System.out.println("Enter 1 to update First Name");
+		System.out.println("Enter 2 to update Last Name");
+		System.out.println("Enter 3 to update Full Name");
+		System.out.println("Enter 0 to go back to Main Menu");
+		
+		System.out.print("Command: ");
+		String comm = sc.nextLine();
+	
+		switch(comm)
+		{
+		case "1":
+			updateFirstName(name);
+			break;
+		case "2":
+			updateLastName(name);
+			break;
+		case "3":
+			updateFullName(name);
+			break;
+		case "0":
+			commandMenu();
+			break;
+			
+		default: 
+			System.out.println("Wrong input, please try again");
+			updatePI(name);
+		}
+		
+	}
+	
+	
+	private void updateFirstName(String name)
+	{
+		PersonalInfo temp = this.phonebookMap.get(name);
+	
+		// separate the lastName
+		String lastName = name.split(" ")[1];
+	
+		String newName = updateValidName(name, "first");
+		
+		newName = newName + " " + lastName;
+		
+		// remove the old from our map
+		this.phonebookMap.remove(name);
+		
+		// add the new from our map 
+		this.phonebookMap.put(newName, temp);
+		
+		displayUpdatedName(name, newName);
+	}
+	
+	private void updateLastName(String name)
+	{
+		PersonalInfo temp = this.phonebookMap.get(name);
+		
+		// separate the first name
+		String firstName = name.split(" ")[0];
+		
+		String newName = updateValidName(name, "last");
+		
+		newName = firstName + " " + newName;
+		
+		this.phonebookMap.remove(name);
+		
+		this.phonebookMap.put(newName, temp);
+		
+		displayUpdatedName(name, newName);
+	}
+	
+	private void updateFullName(String name)
+	{
+		PersonalInfo temp = this.phonebookMap.get(name);
+		
+		String firstName = updateValidName(name, "first");
+		String lastName = updateValidName(name, "last");
+		
+		String newName = firstName + " " + lastName;
+		
+		this.phonebookMap.remove(name);
+		
+		this.phonebookMap.put(newName, temp);
+		
+		displayUpdatedName(name, newName);
+	}
+		
+	
+	private String updateValidName(String name, String type)
+	{
+		String message = String.format("Please enter %s's new %s name: ", name, type);
+		System.out.print(message);
+		String newName = nameValidity(sc.nextLine());
 
-	// This method update the Persons Name (Object)
+		return newName;	
+	} // end of addValidName method 
+	
+	private void displayUpdatedName(String oldName, String newName)
+	{
+		String message = String.format("Name Updated: From %s to %s",oldName, newName);
+		System.out.println(message);
+	}
+	
+	
 	private void updatePerson()
 	{
 		
@@ -557,117 +666,14 @@ public class ConsoleApp {
 	} // end of updatePerson method 	
 	
 
-	private void updateNameMenu(String name)
+	private void updatePhoneNumber(String name)
 	{
-
-			titleBanner("Update Name Menu");
-			System.out.println(name);
-			banner();
-			System.out.println("1 - Change First Name");
-			System.out.println("2 - Change Last Name");
-			System.out.println("3 - Change Full Name");
-			System.out.println("4 - Back To Main Menu");
-			System.out.println("0 - Exit Program");
-			banner();
-			
-			commandNameChange(name);
-	} // end of personalInfoMenu method 
-	
-	
-	// Optimized command 
-	// Pass by Value, Object is a Reference
-	private void commandNameChange(String name)
-	{
-		System.out.print("Enter your command: ");
-		
-		String userCommand = validCommand(4);
-		name = changeName(name, userCommand);
-	} // end of name NameCommand Menu
-	
-	
-	// Method to check if a command is valid
-	// A command is valid if the command is within the num range
-	private String validCommand(int num)
-	{
-		System.out.print("Enter your command: ");
-		String comm = sc.nextLine();
-		
-		// convert the String into a int 
-		int userCommandInt = Integer.parseInt(comm);
-		
-		while(userCommandInt < 0 || userCommandInt > num)
-		{
-			System.out.println("Invalid command, please try again");
-			userCommandInt = Integer.parseInt(sc.nextLine());
-		}
-		
-		// if all is valid we return the userCommand
-		return String.valueOf(userCommandInt);
-	}
-	
-	
-
-	// Method to split the name into two
-	private String[] nameArray(String name)
-	{
-		String[] nameArray = name.split(" ");
-		return nameArray;
-	}
-	
-	private String nameArrayToString(String[] name)
-	{
-		return name[0] + " " + name[1];
-	}
-	
-	private String[] changeFirstName(String[] name)
-	{
-		String input_name = enterName("First");
-		name[0] = input_name;
-		
-		return name;
-	} // end of changingFirstName method 
-		
-	private String[] changeLastName(String[] name)
-	{
-		String input_name = enterName("Last");
-		name[1] = input_name;
-
-		return name;
-	} // end of changingLastName method 
-	
-	// This helps us choose which part of the name to change 
-	private String changeName(String sampleName, String choice)
-	{
-		// converts our String to a String Array
-		String[] name = nameArray(sampleName);
-				
-		if(choice.equals("1"))
-		{
-			name = changeFirstName(name);
-		} else if(choice.equals("2"))
-		{
-			name = changeLastName(name);
-		} else {
-			// We Assume full name
-			name = changeFirstName(name);
-			name = changeLastName(name);
-		}
-		
-		// Returns the reconstructed String Arrray back to String
-		return nameArrayToString(name);
-	} // end of changeFullName method 
-	
-	
-	// This method can be used for First Name or Last Name depending on what the user enters as an input 
-	private String enterName(String pos)
-	{
-		String message = String.format("Please enter the new %s name:", pos);
-		System.out.print(message);
-		
-		String name = nameValidity(sc.nextLine());
-	
-		return name;
-	} // end of enterName method 
+		PhoneNumber newNumber = addPhoneNumber(name);
+		// now we add this to our HashMap
+		this.phonebookMap.get(name).setPhoneNumber(newNumber);
+		String message = String.format("%'s phone number has been updated.", name);
+		System.out.println(message);
+	} // end of updatePhoneNumber method 
 	
 	
 	private void updateEmailAddress(String name)
@@ -675,26 +681,12 @@ public class ConsoleApp {
 		EmailAddress newEmail = addEmailAddress(name);
 		
 		this.phonebookMap.get(name).setEmailAddress(newEmail);;
+
+		String message = String.format("%s's email address has been updated.", name);
+		System.out.println(message);
 	} // end of updateEmailAddress method 
 	
-	private void updatePhoneNumber(String name)
-	{
-		PhoneNumber newNumber = addPhoneNumber(name);
-		// now we add this to our HashMap
-		this.phonebookMap.get(name).setPhoneNumber(newNumber);
-	}
-	
 
-	private String convertNumber(long num)
-	{
-		String number = Long.toString(num);
-		
-		// Reference https://howtodoinjava.com/java/string/format-phone-number/
-		String updatedNumber = number.replaceFirst("(\\d{3})(\\d{3})(\\d{4})", "($1) $2-$3");
-		
-		return updatedNumber;
-	}
-	
 
 /*********************************************************************/
 /** 				Option 4: Delete Person from Phonebook 			 */
@@ -723,52 +715,61 @@ public class ConsoleApp {
 /** 			Option 5: Display Listing						     */
 /*********************************************************************/	
 	
-	
-	// Option 5: Display Listing
-	private void displayListing()
-	{
-		titleBanner("Display Phonebook Information");
-		if(this.phonebookMap.isEmpty())
+		private void displayListing()
 		{
-			System.out.println("Phonebook Empty");
-		}
-		else {
-			for(String name : this.phonebookMap.keySet())
+			titleBanner("Display Phonebook Information");
+			String message = String.format("Phonebook size: %s", this.phonebookMap.size());
+			System.out.println(message);
+
+			if(this.phonebookMap.isEmpty())
 			{
-				displayInfo(name);
+				System.out.println("Phonebook Empty");
 			}
-		} 
-		banner();
-	
-	} // end of displayListing method 
-	
-	// Display Person's name, number, email
-	private void displayInfo(String name)
-	{
+			else {
+				List<String> names = sortKeys(this.phonebookMap);
+				
+				for(String name : names)
+				{
+					displayInfo(name);
+				}
+			} 
+			banner();
+		
+			
+		} // end of displayListing method 
+		
+		
+		/***********************************************************************/	
+		// Display Info
+		/***********************************************************************/	
+		
+		private void displayInfo(String name)
+		{
 
-		banner();
-		displayName(name);
-		displayNumber(name);
-		displayEmail(name);
-		banner();
+			banner();
+			displayName(name);
+			displayNumber(name);
+			displayEmail(name);
 
-	} // end of displayInfo method 
-	
-	public void displayName(String name)
-	{
-		System.out.println("Name: " + name);
-	} // end of displayName method 
-	
-	public void displayNumber(String name)
-	{
-		System.out.println("Phone Number: " + convertNumber(this.phonebookMap.get(name).getPhoneNumber()));
-	} // end of displayNumber method 
-	
-	public void displayEmail(String name)
-	{
-		System.out.println("Email Address: " + this.phonebookMap.get(name).getEmailAddress());
-	} // end of displayEmail method 
-	
+		} // end of displayInfo method 
+		
+		public void displayName(String name)
+		{
+			System.out.println("Name: " + name);
+		} // end of displayName method 
+		
+		public void displayNumber(String name)
+		{
+			System.out.println("Phone Number: " + convertNumber(this.phonebookMap.get(name).getPhoneNumber()));
+		} // end of displayNumber method 
+		
+		public void displayEmail(String name)
+		{
+			System.out.println("Email Address: " + this.phonebookMap.get(name).getEmailAddress());
+		} // end of displayEmail method 
+
+		
+		
 	
 //	// Future Add On
 //	// this method scans a CSV
@@ -787,11 +788,17 @@ public class ConsoleApp {
 	
 	
 /*********************************************************************/
-/** 				Option 6: Export as CSV							 */
+/** 				Option 6: Export as Excel File						 */
 /*********************************************************************/	
 
 	// Option 6: Export as CSV
-	
+	private void exportExcel()
+	{
+		banner();
+		System.out.println("Exporting as EXCEL");
+		banner();
+		Excel_Utility.createExcel(this.phonebookMap);
+	}
 	
 	
 /*********************************************************************/
@@ -804,4 +811,42 @@ public class ConsoleApp {
 		System.exit(0);
 	}
 
+
+
+/***********************************************************************/	
+// Sorting
+/***********************************************************************/	
+	private List<String> sortKeys(Map<String, PersonalInfo> map2)
+	{
+		// Reference
+		//https://stackoverflow.com/questions/922528/how-to-sort-map-values-by-key-in-java
+		List<String> sortedKeys = new ArrayList<String>(map2.keySet());
+		Collections.sort(sortedKeys);
+		
+		return sortedKeys;
+	} // end of sortMap method 
+	
+	
+	
+/***********************************************************************/	
+// Conversion
+/***********************************************************************/
+	
+	private String convertNumber(long num)
+	{
+		String number = Long.toString(num);
+		
+		// Reference https://howtodoinjava.com/java/string/format-phone-number/
+		String updatedNumber = number.replaceFirst("(\\d{3})(\\d{3})(\\d{4})", "($1) $2-$3");
+		
+		return updatedNumber;
+	} // end of convertNumber method 
+	
+
 }
+
+
+/***********************************************************************/	
+// To Do
+/***********************************************************************/
+// 3 is causing a problem update

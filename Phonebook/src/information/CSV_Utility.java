@@ -23,7 +23,7 @@ public final class CSV_Utility {
 	{
 		List<String[]> sampleList = new ArrayList<String[]>();
 	
-		for(Map.Entry map : sampleMap.entrySet())
+		for(Map.Entry<String, PersonalInfo> map : sampleMap.entrySet())
 		{
 			// Split it to 3
 			
