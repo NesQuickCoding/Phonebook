@@ -850,3 +850,6 @@ public class ConsoleApp {
 // To Do
 /***********************************************************************/
 // 3 is causing a problem update
+// Numbers cannot match with pre existing 
+// Email cannot match with pre existing
+// Display Listing, have it display options: only names, only numbers, only emails
