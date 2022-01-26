@@ -15,7 +15,6 @@ import java.util.List;
  * https://www.baeldung.com/java-csv
  * https://www.geeksforgeeks.org/how-to-convert-hashmap-to-arraylist-in-java/
  * 
- * 
  * @author Neslie Fernandez
  *
  */
@@ -769,22 +768,7 @@ public class ConsoleApp {
 		} // end of displayEmail method 
 
 		
-		
 	
-//	// Future Add On
-//	// this method scans a CSV
-//	// places those information in the proper objects to add to our HashMap
-//	private void scanCSV() throws Exception
-//	{
-//		System.out.println("------------------------------------------------------");
-//		System.out.println("Scanning CSV");
-//		System.out.println("------------------------------------------------------");
-//		System.out.print("Please enter the csv name: ");
-//		String csv_input = sc.nextLine();
-//		
-//		// Add our try catch or throw exception if csv file does not exist
-//		
-//	}
 	
 	
 /*********************************************************************/
@@ -845,11 +829,3 @@ public class ConsoleApp {
 
 }
 
-
-/***********************************************************************/	
-// To Do
-/***********************************************************************/
-// 3 is causing a problem update
-// Numbers cannot match with pre existing 
-// Email cannot match with pre existing
-// Display Listing, have it display options: only names, only numbers, only emails
